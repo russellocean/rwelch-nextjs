@@ -25,7 +25,12 @@ uniform mat4 uProjectionMatrix;
 uniform samplerCube uEnvMap;
 uniform vec3 uThemeColor1;
 uniform vec3 uThemeColor2;
+uniform vec3 uThemeAccent;
+uniform vec3 uThemeBackground;
+uniform vec3 uThemeRim;
+uniform vec3 uThemeGlow;
 uniform float uIntensity;
+uniform float uGlowIntensity;
 uniform float uQuality; // Performance scaling factor
 
 varying vec2 vUv;
@@ -297,24 +302,28 @@ void main() {
     // Mix reflection and refraction
     vec3 glassColor = mix(refractColor, reflectColor, F);
     
-    // Metaball-style coloring with flowing gradients (preserved)
+    // Theme-aware metaball coloring with flowing gradients
+    vec3 themeColor1 = uThemeColor1;
+    vec3 themeColor2 = uThemeColor2;
+    vec3 themeAccent = uThemeAccent;
+    
     vec3 flowColor = vec3(
-      0.3 + 0.7 * sin(p.x * 0.5 + uTime * 0.8),
-      0.4 + 0.6 * cos(p.y * 0.7 + uTime * 0.6),
-      0.6 + 0.4 * sin(p.z * 0.3 + uTime * 1.2)
+      mix(themeColor1.r, themeColor2.r, 0.5 + 0.5 * sin(p.x * 0.5 + uTime * 0.8)),
+      mix(themeColor1.g, themeAccent.g, 0.5 + 0.5 * cos(p.y * 0.7 + uTime * 0.6)),
+      mix(themeColor2.b, themeAccent.b, 0.5 + 0.5 * sin(p.z * 0.3 + uTime * 1.2))
     );
     
     // Blend with glass color
     glassColor = mix(glassColor, flowColor, 0.3);
     
-    // Simple rim lighting
+    // Theme-aware rim lighting
     float rim = 1.0 - max(dot(-rd, n), 0.0);
     rim = pow(rim, 2.0);
-    glassColor += rim * vec3(0.8, 0.9, 1.0) * 0.4;
+    glassColor += rim * uThemeRim * 0.4;
     
-    // Distance-based glow
-    float glow = exp(-d * 0.2) * 0.5;
-    glassColor += glow * vec3(0.6, 0.8, 1.0);
+    // Theme-aware distance-based glow
+    float glow = exp(-d * 0.2) * uGlowIntensity;
+    glassColor += glow * uThemeGlow;
     
     color = glassColor * uIntensity;
     
@@ -341,7 +350,12 @@ const RayMarchMaterial = shaderMaterial(
     uEnvMap: null,
     uThemeColor1: new THREE.Color("#7B5CFF"),
     uThemeColor2: new THREE.Color("#FF5EDB"),
+    uThemeAccent: new THREE.Color("#00D9FF"),
+    uThemeBackground: new THREE.Color("#0F0F23"),
+    uThemeRim: new THREE.Color("#A855F7"),
+    uThemeGlow: new THREE.Color("#8B5CF6"),
     uIntensity: 1.0,
+    uGlowIntensity: 0.5,
     uQuality: 1.0, // 1.0 = high quality, 0.5 = medium, 0.0 = low
   },
   vertexShader,

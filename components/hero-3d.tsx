@@ -16,11 +16,42 @@ import {
   ChromaticAberration,
 } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
+import { useTheme } from "next-themes";
 import * as THREE from "three";
 import RayMarchMaterial from "../materials/RayMarchMaterial";
 
 // Extend R3F with our custom material
 extend({ RayMarchMaterial });
+
+// Theme-aware color palettes
+const themeColors = {
+  light: {
+    primary: new THREE.Color("#7B5CFF"),
+    secondary: new THREE.Color("#FF5EDB"),
+    accent: new THREE.Color("#00D9FF"),
+    background: new THREE.Color("#F8FAFC"),
+    rim: new THREE.Color("#4F46E5"),
+    glow: new THREE.Color("#6366F1"),
+    ambient: new THREE.Color("#E2E8F0"),
+    directional: new THREE.Color("#7B5CFF"),
+    intensity: 0.8,
+    bloomIntensity: 0.4,
+    glowIntensity: 0.3,
+  },
+  dark: {
+    primary: new THREE.Color("#8B5DFF"),
+    secondary: new THREE.Color("#FF6EEB"),
+    accent: new THREE.Color("#10E9FF"),
+    background: new THREE.Color("#0F0F23"),
+    rim: new THREE.Color("#A855F7"),
+    glow: new THREE.Color("#8B5CF6"),
+    ambient: new THREE.Color("#1E293B"),
+    directional: new THREE.Color("#8B5DFF"),
+    intensity: 1.2,
+    bloomIntensity: 0.8,
+    glowIntensity: 0.6,
+  },
+};
 
 // Performance configuration based on device capabilities
 const getPerformanceConfig = () => {
@@ -50,6 +81,7 @@ const getPerformanceConfig = () => {
 function RayMarchQuad() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { camera, gl, size } = useThree();
+  const { theme, resolvedTheme } = useTheme();
   const [envMap, setEnvMap] = useState<THREE.CubeTexture | null>(null);
   const [targetMousePosition, setTargetMousePosition] = useState(
     new THREE.Vector2(0.5, 0.5)
@@ -59,6 +91,14 @@ function RayMarchQuad() {
   );
 
   const performanceConfig = useMemo(() => getPerformanceConfig(), []);
+
+  // Get current theme colors
+  const currentTheme = useMemo(() => {
+    const activeTheme = resolvedTheme || theme || "dark";
+    return (
+      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
+    );
+  }, [theme, resolvedTheme]);
 
   // Load HDRI environment map with error handling and performance consideration
   useEffect(() => {
@@ -158,6 +198,14 @@ function RayMarchQuad() {
         uProjectionMatrix: THREE.Matrix4;
         uEnvMap: THREE.CubeTexture | null;
         uQuality: number;
+        uThemeColor1: THREE.Color;
+        uThemeColor2: THREE.Color;
+        uThemeAccent: THREE.Color;
+        uThemeBackground: THREE.Color;
+        uThemeRim: THREE.Color;
+        uThemeGlow: THREE.Color;
+        uIntensity: number;
+        uGlowIntensity: number;
       };
 
       material.uTime = state.clock.elapsedTime;
@@ -173,6 +221,16 @@ function RayMarchQuad() {
         : performanceConfig.mobile
         ? 0.5
         : 1.0;
+
+      // Update theme colors
+      material.uThemeColor1.copy(currentTheme.primary);
+      material.uThemeColor2.copy(currentTheme.secondary);
+      material.uThemeAccent.copy(currentTheme.accent);
+      material.uThemeBackground.copy(currentTheme.background);
+      material.uThemeRim.copy(currentTheme.rim);
+      material.uThemeGlow.copy(currentTheme.glow);
+      material.uIntensity = currentTheme.intensity;
+      material.uGlowIntensity = currentTheme.glowIntensity;
 
       if (envMap) {
         material.uEnvMap = envMap;
@@ -200,6 +258,15 @@ function RayMarchQuad() {
 
 // Fallback component for loading
 function LoadingFallback() {
+  const { theme, resolvedTheme } = useTheme();
+
+  const currentTheme = useMemo(() => {
+    const activeTheme = resolvedTheme || theme || "dark";
+    return (
+      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
+    );
+  }, [theme, resolvedTheme]);
+
   return (
     <mesh position={[0, 0, 0]} scale={2.5}>
       <coneGeometry args={[1.2, 2, 4]} />
@@ -211,7 +278,7 @@ function LoadingFallback() {
         transparent
         opacity={0.95}
         color="#ffffff"
-        emissive="#7B5CFF"
+        emissive={currentTheme.primary}
         emissiveIntensity={0.03}
       />
     </mesh>
@@ -220,11 +287,24 @@ function LoadingFallback() {
 
 // Main scene with post-processing
 function Scene() {
+  const { theme, resolvedTheme } = useTheme();
+
+  const currentTheme = useMemo(() => {
+    const activeTheme = resolvedTheme || theme || "dark";
+    return (
+      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
+    );
+  }, [theme, resolvedTheme]);
+
   return (
     <>
-      {/* Simple ambient lighting */}
-      <ambientLight intensity={0.2} />
-      <directionalLight position={[5, 5, 5]} intensity={0.4} color="#7B5CFF" />
+      {/* Theme-aware lighting */}
+      <ambientLight intensity={0.2} color={currentTheme.ambient} />
+      <directionalLight
+        position={[5, 5, 5]}
+        intensity={0.4}
+        color={currentTheme.directional}
+      />
 
       <Suspense fallback={<LoadingFallback />}>
         <RayMarchQuad />
@@ -235,7 +315,15 @@ function Scene() {
 
 // Optimized post-processing effects
 function Effects() {
+  const { theme, resolvedTheme } = useTheme();
   const performanceConfig = useMemo(() => getPerformanceConfig(), []);
+
+  const currentTheme = useMemo(() => {
+    const activeTheme = resolvedTheme || theme || "dark";
+    return (
+      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
+    );
+  }, [theme, resolvedTheme]);
 
   // Disable effects entirely on low-end devices
   if (performanceConfig.disablePostProcessing) {
@@ -247,7 +335,7 @@ function Effects() {
     return (
       <EffectComposer>
         <Bloom
-          intensity={0.6}
+          intensity={currentTheme.bloomIntensity}
           luminanceThreshold={0.3}
           luminanceSmoothing={0.4}
           blendFunction={BlendFunction.ADD}
@@ -259,7 +347,7 @@ function Effects() {
   return (
     <EffectComposer>
       <Bloom
-        intensity={1.0}
+        intensity={currentTheme.bloomIntensity * 2}
         luminanceThreshold={0.2}
         luminanceSmoothing={0.6}
         blendFunction={BlendFunction.ADD}
@@ -275,6 +363,7 @@ function Effects() {
 export default function Hero3D() {
   const [pixelRatio, setPixelRatio] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
+  const { resolvedTheme } = useTheme();
   const performanceConfig = useMemo(() => getPerformanceConfig(), []);
 
   useEffect(() => {
@@ -318,7 +407,9 @@ export default function Hero3D() {
         data-hero-3d
         style={{
           background:
-            "linear-gradient(135deg, rgba(123, 92, 255, 0.1) 0%, rgba(255, 123, 92, 0.1) 100%)",
+            resolvedTheme === "light"
+              ? "linear-gradient(135deg, rgba(123, 92, 255, 0.05) 0%, rgba(255, 123, 92, 0.05) 100%)"
+              : "linear-gradient(135deg, rgba(123, 92, 255, 0.1) 0%, rgba(255, 123, 92, 0.1) 100%)",
         }}
       />
     );
@@ -333,7 +424,7 @@ export default function Hero3D() {
         right: "0",
         width: "60%", // Reduced width on mobile
         height: "60%", // Reduced height on mobile
-        opacity: "0.3", // Much lower opacity for text readability
+        opacity: resolvedTheme === "light" ? "0.2" : "0.3", // Lower opacity in light mode
         zIndex: "-10",
         pointerEvents: "none" as const,
       }
@@ -357,7 +448,7 @@ export default function Hero3D() {
             premultipliedAlpha: false,
             powerPreference: "high-performance",
             toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1.1,
+            toneMappingExposure: resolvedTheme === "light" ? 0.8 : 1.1,
             // Reduce context creation overhead
             preserveDrawingBuffer: false,
             failIfMajorPerformanceCaveat: true,
@@ -375,13 +466,15 @@ export default function Hero3D() {
         </Canvas>
       </div>
 
-      {/* Mobile text readability overlay */}
+      {/* Theme-aware mobile text readability overlay */}
       {performanceConfig.mobile && (
         <div
           className="absolute inset-0 -z-5"
           style={{
             background:
-              "linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, transparent 70%)",
+              resolvedTheme === "light"
+                ? "linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 70%)"
+                : "linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
