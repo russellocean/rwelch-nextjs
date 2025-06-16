@@ -21,7 +21,12 @@ const eslintConfig = [
       "tailwindcss/enforces-shorthand": "warn",
       "tailwindcss/migration-from-tailwind-2": "warn",
       "tailwindcss/no-arbitrary-value": "off",
-      "tailwindcss/no-custom-classname": "warn",
+      "tailwindcss/no-custom-classname": [
+        "warn",
+        {
+          whitelist: ["animate-caret-blink", "toaster"],
+        },
+      ],
       "tailwindcss/no-contradicting-classname": "error",
     },
   },
