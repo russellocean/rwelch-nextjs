@@ -36,38 +36,73 @@ export function Navigation() {
       initial={{ y: -50 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         isScrolled ? "py-2" : "py-4"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
           className={`glass rounded-2xl px-6 py-3 transition-all duration-300 ${
             isScrolled ? "backdrop-blur-xl" : ""
           }`}
         >
           <div className="flex items-center justify-between">
-            {/* Logo - simplified hover effect */}
-            <div className="flex items-center space-x-2 hover:scale-105 transition-transform">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">RW</span>
+            {/* Logo - code-themed design */}
+            <motion.div
+              className="flex items-center space-x-3 transition-transform hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="relative">
+                <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] shadow-lg">
+                  <div className="flex flex-col space-y-0.5">
+                    <div className="flex space-x-0.5">
+                      <div className="size-1 rounded-full bg-white/90"></div>
+                      <div className="size-1 rounded-full bg-white/70"></div>
+                    </div>
+                    <div className="flex space-x-0.5">
+                      <div className="size-1 rounded-full bg-white/70"></div>
+                      <div className="size-1 rounded-full bg-white/90"></div>
+                    </div>
+                  </div>
+                </div>
+                {/* Subtle glow effect */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] opacity-20 blur-md"></div>
               </div>
-              <span className="font-semibold text-lg gradient-text">
-                Russell Welch
-              </span>
-            </div>
+              <div className="flex flex-col">
+                <span className="gradient-text text-lg font-bold tracking-tight">
+                  Russell Welch
+                </span>
+                <span className="font-mono text-xs text-muted-foreground/80">
+                  russellwelch.dev
+                </span>
+              </div>
+            </motion.div>
 
-            {/* Desktop Navigation - remove individual motion elements */}
-            <div className="hidden md:flex items-center space-x-8">
-              {navItems.map((item) => (
-                <a
+            {/* Desktop Navigation - enhanced with code-inspired styling */}
+            <div className="hidden items-center space-x-1 md:flex">
+              {navItems.map((item, index) => (
+                <motion.a
                   key={item.name}
                   href={item.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
+                  className="group relative rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:text-foreground"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] transition-all group-hover:w-full" />
-                </a>
+                  <span className="relative z-10">{item.name}</span>
+                  {/* Hover background */}
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[hsl(var(--portfolio-primary))]/10 to-[hsl(var(--portfolio-accent))]/10 opacity-0 transition-opacity group-hover:opacity-100" />
+                  {/* Bottom accent line */}
+                  <span className="absolute -bottom-0.5 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] transition-all group-hover:w-3/4" />
+                  {/* Code-inspired dots */}
+                  <div className="absolute -left-1 top-1/2 flex -translate-y-1/2 flex-col space-y-0.5 opacity-0 transition-opacity group-hover:opacity-50">
+                    <div className="size-0.5 rounded-full bg-[hsl(var(--portfolio-primary))]" />
+                    <div className="size-0.5 rounded-full bg-[hsl(var(--portfolio-accent))]" />
+                  </div>
+                </motion.a>
               ))}
             </div>
 
@@ -80,9 +115,9 @@ export function Navigation() {
                 className="rounded-full"
               >
                 {theme === "dark" ? (
-                  <Sun className="h-4 w-4" />
+                  <Sun className="size-4" />
                 ) : (
-                  <Moon className="h-4 w-4" />
+                  <Moon className="size-4" />
                 )}
               </Button>
 
@@ -90,13 +125,13 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden rounded-full"
+                className="rounded-full md:hidden"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 {isMobileMenuOpen ? (
-                  <X className="h-4 w-4" />
+                  <X className="size-4" />
                 ) : (
-                  <Menu className="h-4 w-4" />
+                  <Menu className="size-4" />
                 )}
               </Button>
             </div>
@@ -112,7 +147,7 @@ export function Navigation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden mt-2 mx-4"
+            className="mx-4 mt-2 md:hidden"
           >
             <div className="glass rounded-2xl p-4">
               <div className="flex flex-col space-y-3">
@@ -121,7 +156,7 @@ export function Navigation() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 hover:translate-x-1"
+                    className="py-2 text-sm font-medium text-muted-foreground transition-colors hover:translate-x-1 hover:text-foreground"
                   >
                     {item.name}
                   </a>
