@@ -8,8 +8,9 @@ varying vec3 vNormal;
 
 void main() {
   vUv = uv;
-  vPosition = position;
-  vNormal = normal;
+  // Pass world position for ray direction calculation
+  vPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+  vNormal = normalMatrix * normal;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
 `;
@@ -113,10 +114,10 @@ vec3 bend(vec3 p, float k) {
   return vec3(p.x, m * p.yz);
 }
 
-// Metaball influence function
+// Metaball influence function with better falloff
 float metaball(vec3 p, vec3 center, float radius) {
   float dist = length(p - center);
-  return radius / (dist * dist + 0.01);
+  return radius / (dist + 0.1);
 }
 
 // Main scene - Flowing metaballs inspired by Vercel's style
@@ -127,38 +128,38 @@ float map(vec3 p) {
   vec2 mouse = (uMouse - 0.5) * 2.0;
   vec3 mouseInfluence = vec3(mouse.x * 1.5, -mouse.y * 1.0, mouse.x * 0.3);
   
-  // Create flowing metaballs positioned on the right side
+  // Create flowing metaballs with more spread and varied timing
   vec3 center1 = vec3(
-    1.5 + sin(t * 0.7) * 0.8 + mouseInfluence.x * 0.5,
-    cos(t * 0.5) * 0.8 + mouseInfluence.y * 0.3,
-    sin(t * 0.3) * 0.6 + mouseInfluence.z * 0.4
+    0.2 + sin(t * 0.7) * 0.6 + mouseInfluence.x * 0.3,
+    1.0 + cos(t * 0.5) * 0.8 + mouseInfluence.y * 0.3,
+    sin(t * 0.3) * 0.5 + mouseInfluence.z * 0.2
   );
   
   vec3 center2 = vec3(
-    2.0 + cos(t * 0.8) * 0.6 + mouseInfluence.x * 0.3,
-    sin(t * 0.9) * 1.1 + mouseInfluence.y * 0.5,
-    cos(t * 0.6) * 0.7 + mouseInfluence.z * 0.2
+    1.2 + cos(t * 1.3) * 0.5 + mouseInfluence.x * 0.2,
+    -0.5 + sin(t * 0.9) * 0.7 + mouseInfluence.y * 0.4,
+    cos(t * 0.8) * 0.6 + mouseInfluence.z * 0.2
   );
   
   vec3 center3 = vec3(
-    1.8 + sin(t * 1.1) * 0.7 + mouseInfluence.x * 0.7,
-    cos(t * 0.7) * 0.6 + mouseInfluence.y * 0.4,
-    sin(t * 0.8) * 0.8 + mouseInfluence.z * 0.3
+    -0.3 + sin(t * 1.8) * 0.7 + mouseInfluence.x * 0.4,
+    -0.8 + cos(t * 1.4) * 0.6 + mouseInfluence.y * 0.3,
+    sin(t * 1.1) * 0.8 + mouseInfluence.z * 0.3
   );
   
   vec3 center4 = vec3(
-    2.2 + cos(t * 0.6) * 0.9 + mouseInfluence.x * 0.4,
-    sin(t * 1.2) * 0.9 + mouseInfluence.y * 0.6,
-    cos(t * 0.9) * 0.5 + mouseInfluence.z * 0.5
+    0.8 + cos(t * 0.4) * 0.8 + mouseInfluence.x * 0.3,
+    0.3 + sin(t * 2.1) * 0.9 + mouseInfluence.y * 0.5,
+    cos(t * 1.5) * 0.4 + mouseInfluence.z * 0.4
   );
   
   vec3 center5 = vec3(
-    1.6 + sin(t * 0.4) * 0.5 + mouseInfluence.x * 0.6,
-    cos(t * 1.0) * 1.2 + mouseInfluence.y * 0.2,
-    sin(t * 1.3) * 0.9 + mouseInfluence.z * 0.4
+    -0.8 + sin(t * 2.4) * 0.4 + mouseInfluence.x * 0.4,
+    0.8 + cos(t * 1.7) * 1.1 + mouseInfluence.y * 0.2,
+    sin(t * 0.6) * 0.9 + mouseInfluence.z * 0.3
   );
   
-  // Calculate metaball influences with varying radii
+  // Calculate metaball influences with varied sizes for dynamic merging/splitting
   float influence = 0.0;
   influence += metaball(p, center1, 0.8 + sin(t * 1.5) * 0.2);
   influence += metaball(p, center2, 0.6 + cos(t * 1.8) * 0.15);
@@ -166,8 +167,8 @@ float map(vec3 p) {
   influence += metaball(p, center4, 0.9 + cos(t * 1.2) * 0.25);
   influence += metaball(p, center5, 0.5 + sin(t * 2.5) * 0.12);
   
-  // Convert metaball influence to distance field
-  float metaballField = 1.0 / influence - 0.3;
+  // Convert metaball influence to distance field with balanced threshold
+  float metaballField = 1.5 / influence - 0.6;
   
   // Just use the metaballs - no ribbon
   float result = metaballField;
@@ -222,15 +223,23 @@ float fresnel(vec3 I, vec3 N, float ior) {
 }
 
 void main() {
+  // Proper UV mapping from 0-1 to -1 to 1
   vec2 uv = (vUv - 0.5) * 2.0;
-  uv.x *= uResolution.x / uResolution.y;
   
-  // Camera setup
+  // Shift the view to the right
+  uv.x -= 0.25;
+  
+  // Correct aspect ratio - this ensures no distortion
+  float aspect = uResolution.x / uResolution.y;
+  uv.x *= aspect;
+  
+  // Camera setup with proper ray direction
   vec3 ro = uCameraPosition;
-  vec3 rd = normalize(vec3(uv, -1.0));
   
-  // Transform ray direction by view matrix
-  rd = (inverse(uViewMatrix) * vec4(rd, 0.0)).xyz;
+  // Create proper ray direction for ray marching
+  // Use a focal length that matches the camera's field of view
+  float focalLength = 1.0;
+  vec3 rd = normalize(vec3(uv.x, uv.y, -focalLength));
   
   // Ray march
   float d = rayMarch(ro, rd);

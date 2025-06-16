@@ -98,7 +98,7 @@ function RayMarchQuad() {
   const material = new RayMarchMaterial();
 
   return (
-    <mesh position={[0, 0, 0]} scale={[4, 4, 1]}>
+    <mesh position={[0, 0, 0]} scale={[6, 6, 1]}>
       <planeGeometry args={[1, 1]} />
       <primitive
         object={material}
@@ -167,7 +167,7 @@ export default function Hero3D() {
   return (
     <div className="absolute inset-0 w-full h-full -z-10">
       <Canvas
-        camera={{ position: [1.5, 0.5, 4], fov: 65 }}
+        camera={{ position: [0, 0, 5], fov: 65 }}
         gl={{
           antialias: true,
           alpha: true,
