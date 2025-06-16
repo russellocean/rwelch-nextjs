@@ -31,8 +31,8 @@ varying vec2 vUv;
 varying vec3 vPosition;
 varying vec3 vNormal;
 
-#define MAX_STEPS 32
-#define MAX_DIST 20.0
+#define MAX_STEPS 16
+#define MAX_DIST 10.0
 #define SURF_DIST 0.05
 
 // Smooth minimum function for blending SDFs

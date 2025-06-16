@@ -96,16 +96,13 @@ export function ResumeSection() {
 
   return (
     <section id="resume" className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
+      {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
-        <div
-          className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float"
-          style={{ animationDelay: "3s" }}
-        />
+        <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-10" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header - keep simple fade in */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -122,11 +119,12 @@ export function ResumeSection() {
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact Card */}
+          {/* Contact Card - simplified animation */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="lg:col-span-1"
           >
             <Card className="glass p-6 sticky top-24">
@@ -140,7 +138,7 @@ export function ResumeSection() {
               </CardHeader>
               <CardContent className="p-0 space-y-4">
                 {/* Email */}
-                <div className="flex items-center gap-3 p-3 glass rounded-lg hover:scale-[1.02] transition-transform">
+                <div className="flex items-center gap-3 p-3 glass rounded-lg hover:shadow-md transition-shadow">
                   <Mail className="w-5 h-5 text-[hsl(var(--portfolio-primary))]" />
                   <div className="flex-1">
                     <div className="font-medium">{contactInfo.email}</div>
@@ -216,11 +214,12 @@ export function ResumeSection() {
             </Card>
           </motion.div>
 
-          {/* Resume Content */}
+          {/* Resume Content - simplified animation */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="lg:col-span-2 space-y-8"
           >
             {/* Experience */}
@@ -232,12 +231,8 @@ export function ResumeSection() {
               </CardHeader>
               <CardContent className="p-0 space-y-6">
                 {experience.map((job, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
                     className="border-l-2 border-[hsl(var(--portfolio-primary))] pl-6 relative"
                   >
                     <div className="absolute -left-2 top-0 w-4 h-4 bg-[hsl(var(--portfolio-primary))] rounded-full" />
@@ -249,95 +244,86 @@ export function ResumeSection() {
                       <span className="font-medium text-[hsl(var(--portfolio-accent))]">
                         {job.company}
                       </span>
-                      <span className="text-muted-foreground">•</span>
-                      <span className="text-muted-foreground">
-                        {job.location}
+                      <span className="text-sm text-muted-foreground">
+                        • {job.location}
                       </span>
                     </div>
                     <ul className="space-y-2">
-                      {job.achievements.map((achievement, i) => (
+                      {job.achievements.map((achievement, achievementIndex) => (
                         <li
-                          key={i}
-                          className="text-muted-foreground text-sm flex items-start gap-2"
+                          key={achievementIndex}
+                          className="text-sm text-muted-foreground flex items-start gap-2"
                         >
-                          <span className="w-1.5 h-1.5 bg-[hsl(var(--portfolio-primary))] rounded-full mt-2 flex-shrink-0" />
+                          <span className="w-2 h-2 bg-[hsl(var(--portfolio-accent))] rounded-full mt-2 flex-shrink-0" />
                           {achievement}
                         </li>
                       ))}
                     </ul>
-                  </motion.div>
+                  </div>
                 ))}
               </CardContent>
             </Card>
 
-            {/* Education */}
-            <Card className="glass p-6">
-              <CardHeader className="p-0 mb-6">
-                <h3 className="text-2xl font-bold text-[hsl(var(--portfolio-primary))]">
-                  Education
-                </h3>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                  <h4 className="text-lg font-semibold">{education.degree}</h4>
-                  <Badge variant="outline">{education.period}</Badge>
-                </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="font-medium text-[hsl(var(--portfolio-accent))]">
-                    {education.school}
-                  </span>
-                  <span className="text-muted-foreground">•</span>
-                  <span className="text-muted-foreground">
-                    {education.location}
-                  </span>
-                </div>
-                <div className="text-muted-foreground">
-                  GPA: {education.gpa}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Certifications & Awards */}
+            {/* Education & Certifications */}
             <div className="grid md:grid-cols-2 gap-6">
+              {/* Education */}
               <Card className="glass p-6">
                 <CardHeader className="p-0 mb-4">
-                  <h3 className="text-xl font-bold text-[hsl(var(--portfolio-primary))]">
-                    Certifications
+                  <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
+                    Education
                   </h3>
                 </CardHeader>
                 <CardContent className="p-0">
+                  <div>
+                    <h4 className="font-semibold mb-1">{education.degree}</h4>
+                    <p className="text-[hsl(var(--portfolio-primary))] font-medium">
+                      {education.school}
+                    </p>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                      <span>{education.period}</span>
+                      <span>•</span>
+                      <span>{education.location}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      GPA: {education.gpa}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Certifications & Awards */}
+              <Card className="glass p-6">
+                <CardHeader className="p-0 mb-4">
+                  <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
+                    Certifications & Awards
+                  </h3>
+                </CardHeader>
+                <CardContent className="p-0 space-y-4">
                   {certifications.map((cert, index) => (
-                    <div key={index} className="mb-4 last:mb-0">
+                    <div key={index}>
                       <h4 className="font-semibold">{cert.name}</h4>
-                      <p className="text-[hsl(var(--portfolio-accent))] text-sm">
+                      <p className="text-sm text-[hsl(var(--portfolio-primary))]">
                         {cert.issuer} • {cert.date}
                       </p>
-                      <p className="text-muted-foreground text-sm mt-1">
+                      <p className="text-sm text-muted-foreground">
                         {cert.description}
                       </p>
                     </div>
                   ))}
-                </CardContent>
-              </Card>
 
-              <Card className="glass p-6">
-                <CardHeader className="p-0 mb-4">
-                  <h3 className="text-xl font-bold text-[hsl(var(--portfolio-primary))]">
-                    Awards
-                  </h3>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <ul className="space-y-2">
-                    {awards.map((award, index) => (
-                      <li
-                        key={index}
-                        className="text-muted-foreground text-sm flex items-start gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 bg-[hsl(var(--portfolio-accent))] rounded-full mt-2 flex-shrink-0" />
-                        {award}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="pt-4 border-t border-[hsl(var(--portfolio-glass-border))]">
+                    <h4 className="font-semibold mb-2">Awards</h4>
+                    <ul className="space-y-1">
+                      {awards.map((award, index) => (
+                        <li
+                          key={index}
+                          className="text-sm text-muted-foreground"
+                        >
+                          • {award}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
             </div>

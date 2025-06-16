@@ -154,16 +154,13 @@ const categories = [
 export function ProjectsSection() {
   return (
     <section id="projects" className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
+      {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
-        <div
-          className="absolute top-1/4 left-1/3 w-96 h-96 bg-[hsl(var(--portfolio-primary))] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float"
-          style={{ animationDelay: "1s" }}
-        />
+        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[hsl(var(--portfolio-primary))] rounded-full mix-blend-multiply filter blur-xl opacity-10" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header - keep simple fade in */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -179,7 +176,7 @@ export function ProjectsSection() {
           </p>
         </motion.div>
 
-        {/* Category Filter */}
+        {/* Category Filter - simplified animation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -197,19 +194,17 @@ export function ProjectsSection() {
           ))}
         </motion.div>
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="group"
-            >
-              <Card className="glass overflow-hidden h-full hover:animate-glow transition-all">
+        {/* Projects Grid - Simplified to one container animation */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {projects.map((project) => (
+            <div key={project.id} className="group">
+              <Card className="glass overflow-hidden h-full hover:shadow-lg transition-shadow">
                 {/* Project Image */}
                 <div className="relative overflow-hidden">
                   <div className="aspect-video bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] flex items-center justify-center">
@@ -265,13 +260,13 @@ export function ProjectsSection() {
                   </div>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-3 gap-2 text-center text-sm">
+                  <div className="grid grid-cols-3 gap-2 text-center text-xs">
                     {Object.entries(project.stats).map(([key, value]) => (
-                      <div key={key} className="glass p-2 rounded">
+                      <div key={key} className="bg-muted/30 rounded p-2">
                         <div className="font-semibold text-[hsl(var(--portfolio-primary))]">
                           {value}
                         </div>
-                        <div className="text-xs text-muted-foreground capitalize">
+                        <div className="text-muted-foreground capitalize">
                           {key}
                         </div>
                       </div>
@@ -279,20 +274,22 @@ export function ProjectsSection() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* View More Button */}
+        {/* CTA Section - simplified animation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="text-center mt-16"
         >
-          <Button size="lg" variant="glass-outline">
-            <Github className="w-4 h-4 mr-2" />
-            View All Projects on GitHub
+          <p className="text-muted-foreground mb-6">
+            Want to see more projects or discuss a potential collaboration?
+          </p>
+          <Button variant="glass-primary" size="lg">
+            View All Projects
           </Button>
         </motion.div>
       </div>

@@ -33,8 +33,9 @@ export function Navigation() {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
+      initial={{ y: -50 }}
       animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled ? "py-2" : "py-4"
       }`}
@@ -46,31 +47,27 @@ export function Navigation() {
           }`}
         >
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-2"
-            >
+            {/* Logo - simplified hover effect */}
+            <div className="flex items-center space-x-2 hover:scale-105 transition-transform">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] flex items-center justify-center">
                 <span className="text-white font-bold text-sm">RW</span>
               </div>
               <span className="font-semibold text-lg gradient-text">
                 Russell Welch
               </span>
-            </motion.div>
+            </div>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - remove individual motion elements */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
-                <motion.a
+                <a
                   key={item.name}
                   href={item.href}
-                  whileHover={{ y: -2 }}
                   className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
                 >
                   {item.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] transition-all group-hover:w-full" />
-                </motion.a>
+                </a>
               ))}
             </div>
 
@@ -107,27 +104,27 @@ export function Navigation() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - keep AnimatePresence for functionality */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
             className="md:hidden mt-2 mx-4"
           >
             <div className="glass rounded-2xl p-4">
               <div className="flex flex-col space-y-3">
                 {navItems.map((item) => (
-                  <motion.a
+                  <a
                     key={item.name}
                     href={item.href}
-                    whileHover={{ x: 4 }}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 hover:translate-x-1"
                   >
                     {item.name}
-                  </motion.a>
+                  </a>
                 ))}
               </div>
             </div>

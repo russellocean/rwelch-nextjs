@@ -73,13 +73,13 @@ const stats = [
 export function AboutSection() {
   return (
     <section id="about" className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
+      {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float" />
+        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-10" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header - keep simple fade in */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -95,23 +95,16 @@ export function AboutSection() {
           </p>
         </motion.div>
 
-        {/* Stats Grid */}
+        {/* Stats Grid - Simplified animation, group together instead of individual items */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
         >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <Card className="glass text-center p-6 hover:animate-glow transition-all">
+          {stats.map((stat) => (
+            <div key={stat.label} className="group">
+              <Card className="glass text-center p-6 hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
                   <stat.icon className="w-8 h-8 mx-auto mb-3 text-[hsl(var(--portfolio-primary))]" />
                   <div className="text-3xl font-bold gradient-text mb-1">
@@ -122,16 +115,17 @@ export function AboutSection() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Timeline */}
+          {/* Timeline - Simplified to one motion wrapper */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
               <Calendar className="w-6 h-6 text-[hsl(var(--portfolio-primary))]" />
@@ -139,16 +133,12 @@ export function AboutSection() {
             </h3>
             <div className="space-y-6">
               {timeline.map((item, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
                   className="relative pl-8 border-l-2 border-[hsl(var(--portfolio-primary))] last:border-l-0"
                 >
                   <div className="absolute -left-2 top-0 w-4 h-4 bg-[hsl(var(--portfolio-primary))] rounded-full" />
-                  <Card className="glass p-4 hover:scale-[1.02] transition-transform">
+                  <Card className="glass p-4 hover:shadow-md transition-shadow">
                     <CardContent className="p-0">
                       <div className="flex items-center gap-2 mb-2">
                         <Badge
@@ -178,30 +168,25 @@ export function AboutSection() {
                       </p>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
 
-          {/* Skills */}
+          {/* Skills - Simplified to one motion wrapper */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
             <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
               <Palette className="w-6 h-6 text-[hsl(var(--portfolio-accent))]" />
               Skills & Technologies
             </h3>
             <div className="space-y-6">
-              {skills.map((skillGroup, index) => (
-                <motion.div
-                  key={skillGroup.category}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
+              {skills.map((skillGroup) => (
+                <div key={skillGroup.category}>
                   <Card className="glass p-4">
                     <CardContent className="p-0">
                       <h4 className="font-semibold mb-3 text-[hsl(var(--portfolio-accent))]">
@@ -209,23 +194,18 @@ export function AboutSection() {
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {skillGroup.items.map((skill) => (
-                          <motion.div
+                          <Badge
                             key={skill}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                            variant="outline"
+                            className="hover:bg-[hsl(var(--portfolio-primary))] hover:text-white transition-colors"
                           >
-                            <Badge
-                              variant="outline"
-                              className="hover:bg-[hsl(var(--portfolio-primary))] hover:text-white transition-colors"
-                            >
-                              {skill}
-                            </Badge>
-                          </motion.div>
+                            {skill}
+                          </Badge>
                         ))}
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
