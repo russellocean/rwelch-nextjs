@@ -191,7 +191,7 @@ export function HeroSection() {
               <p>
                 Whether crafting a luxury e-commerce experience for Dare2Watch
                 or streamlining internal logistics, I thrive at the intersection
-                of design and engineering—turning complex workflows into
+                of design and engineering, turning complex workflows into
                 delightful, efficient tools.
               </p>
             </motion.div>
