@@ -50,19 +50,30 @@ function RayMarchQuad() {
     });
   }, [gl]);
 
-  // Mouse tracking with smooth interpolation
+  // Optimized mouse tracking with throttling
   useEffect(() => {
+    let mouseTimeout: NodeJS.Timeout | undefined;
+
     const handleMouseMove = (event: MouseEvent) => {
-      setTargetMousePosition(
-        new THREE.Vector2(
-          event.clientX / window.innerWidth,
-          event.clientY / window.innerHeight
-        )
-      );
+      // Throttle mouse updates for better performance
+      if (mouseTimeout) return;
+
+      mouseTimeout = setTimeout(() => {
+        setTargetMousePosition(
+          new THREE.Vector2(
+            event.clientX / window.innerWidth,
+            event.clientY / window.innerHeight
+          )
+        );
+        mouseTimeout = undefined;
+      }, 16); // ~60fps throttling
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (mouseTimeout) clearTimeout(mouseTimeout);
+    };
   }, []);
 
   // Animation loop with smooth mouse interpolation
@@ -145,8 +156,33 @@ function Scene() {
   );
 }
 
-// Post-processing effects
+// Optimized post-processing effects
 function Effects() {
+  const [lowQuality, setLowQuality] = useState(false);
+
+  useEffect(() => {
+    // Detect if we should use lower quality effects
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    setLowQuality(isMobile);
+  }, []);
+
+  if (lowQuality) {
+    // Minimal effects for mobile/low-end devices
+    return (
+      <EffectComposer>
+        <Bloom
+          intensity={0.8}
+          luminanceThreshold={0.2}
+          luminanceSmoothing={0.6}
+          blendFunction={BlendFunction.ADD}
+        />
+      </EffectComposer>
+    );
+  }
+
   return (
     <EffectComposer>
       <Bloom
@@ -164,12 +200,30 @@ function Effects() {
 }
 
 export default function Hero3D() {
+  const [pixelRatio, setPixelRatio] = useState(1);
+
+  useEffect(() => {
+    // Performance-based pixel ratio
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    const isLowEnd =
+      navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+
+    if (isMobile || isLowEnd) {
+      setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    } else {
+      setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    }
+  }, []);
+
   return (
     <div className="absolute inset-0 w-full h-full -z-10">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 65 }}
         gl={{
-          antialias: true,
+          antialias: false, // Disable expensive antialiasing
           alpha: true,
           premultipliedAlpha: false,
           powerPreference: "high-performance",
@@ -177,7 +231,8 @@ export default function Hero3D() {
           toneMappingExposure: 1.1,
         }}
         style={{ background: "transparent" }}
-        dpr={[1, 2]}
+        dpr={pixelRatio}
+        performance={{ min: 0.8 }} // Auto-adjust quality if FPS drops
       >
         <Scene />
         <Effects />

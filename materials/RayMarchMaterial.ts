@@ -31,9 +31,9 @@ varying vec2 vUv;
 varying vec3 vPosition;
 varying vec3 vNormal;
 
-#define MAX_STEPS 50
-#define MAX_DIST 50.0
-#define SURF_DIST 0.02
+#define MAX_STEPS 32
+#define MAX_DIST 20.0
+#define SURF_DIST 0.05
 
 // Smooth minimum function for blending SDFs
 float smin(float a, float b, float k) {
@@ -187,16 +187,20 @@ vec3 calcNormal(vec3 p) {
   ));
 }
 
-// Ray marching function
+// Optimized ray marching function with adaptive stepping
 float rayMarch(vec3 ro, vec3 rd) {
   float dO = 0.0;
   
   for(int i = 0; i < MAX_STEPS; i++) {
     vec3 p = ro + rd * dO;
     float dS = map(p);
-    dO += dS;
     
-    if(dO > MAX_DIST || abs(dS) < SURF_DIST) break;
+    // Early exit for performance
+    if(abs(dS) < SURF_DIST) break;
+    if(dO > MAX_DIST) return MAX_DIST;
+    
+    // Adaptive step size - take larger steps when far from surfaces
+    dO += dS * (1.0 + dO * 0.1);
   }
   
   return dO;
