@@ -69,6 +69,14 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Portfolio Custom Variables */
+    --portfolio-primary: 258 100% 68%; /* #7B5CFF electric violet */
+    --portfolio-accent: 314 100% 69%; /* #FF5EDB pink magenta */
+    --portfolio-glass: 255 255 255 / 0.25;
+    --portfolio-glass-border: 255 255 255 / 0.18;
+    --portfolio-gradient-start: 258 100% 68%;
+    --portfolio-gradient-end: 314 100% 69%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -134,6 +142,14 @@
     --sidebar-border: 240 3.7% 15.9%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Portfolio Custom Variables - Dark Mode */
+    --portfolio-primary: 258 100% 75%; /* Slightly brighter in dark mode */
+    --portfolio-accent: 314 100% 75%;
+    --portfolio-glass: 0 0 0 / 0.25;
+    --portfolio-glass-border: 255 255 255 / 0.08;
+    --portfolio-gradient-start: 258 100% 75%;
+    --portfolio-gradient-end: 314 100% 75%;
   }
 }
 
@@ -143,5 +159,67 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: radial-gradient(
+        circle at 20% 80%,
+        hsl(var(--portfolio-primary) / 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        hsl(var(--portfolio-accent) / 0.1) 0%,
+        transparent 50%
+      );
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(var(--portfolio-glass));
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(var(--portfolio-glass-border));
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+
+  .dark .glass {
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--portfolio-primary)),
+      hsl(var(--portfolio-accent))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 4s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 20px hsl(var(--portfolio-primary) / 0.3);
+  }
+  to {
+    box-shadow: 0 0 40px hsl(var(--portfolio-accent) / 0.5);
   }
 }
