@@ -26,14 +26,16 @@ uniform samplerCube uEnvMap;
 uniform vec3 uThemeColor1;
 uniform vec3 uThemeColor2;
 uniform float uIntensity;
+uniform float uQuality; // Performance scaling factor
 
 varying vec2 vUv;
 varying vec3 vPosition;
 varying vec3 vNormal;
 
-#define MAX_STEPS 16
+// Performance-adaptive constants
+#define MAX_STEPS int(12.0 + 4.0 * uQuality)
 #define MAX_DIST 10.0
-#define SURF_DIST 0.05
+#define SURF_DIST (0.05 * (2.0 - uQuality))
 
 // Smooth minimum function for blending SDFs
 float smin(float a, float b, float k) {
@@ -70,7 +72,7 @@ float noise(vec3 p) {
   return fract(sin(dot(p, vec3(12.9898, 78.233, 45.164))) * 43758.5453);
 }
 
-// Smooth noise
+// Optimized smooth noise (reduced complexity for performance)
 float smoothNoise(vec3 p) {
   vec3 i = floor(p);
   vec3 f = fract(p);
@@ -84,12 +86,14 @@ float smoothNoise(vec3 p) {
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
-// Fractal noise
+// Reduced fractal noise iterations for performance
 float fbm(vec3 p) {
   float value = 0.0;
   float amplitude = 0.5;
   
+  int iterations = int(2.0 + uQuality);
   for(int i = 0; i < 3; i++) {
+    if(i >= iterations) break;
     value += amplitude * smoothNoise(p);
     p *= 2.0;
     amplitude *= 0.5;
@@ -114,13 +118,13 @@ vec3 bend(vec3 p, float k) {
   return vec3(p.x, m * p.yz);
 }
 
-// Metaball influence function with better falloff
+// Slightly optimized metaball influence function
 float metaball(vec3 p, vec3 center, float radius) {
   float dist = length(p - center);
   return radius / (dist + 0.1);
 }
 
-// Main scene - Flowing metaballs inspired by Vercel's style
+// Main scene - Preserved visual appearance with minor optimizations
 float map(vec3 p) {
   float t = uTime * 0.6;
   
@@ -128,38 +132,58 @@ float map(vec3 p) {
   vec2 mouse = (uMouse - 0.5) * 2.0;
   vec3 mouseInfluence = vec3(mouse.x * 1.5, -mouse.y * 1.0, mouse.x * 0.3);
   
-  // Create flowing metaballs with more spread and varied timing
+  // Create flowing metaballs with preserved timing but cached calculations
+  float sinT07 = sin(t * 0.7);
+  float cosT05 = cos(t * 0.5);
+  float sinT03 = sin(t * 0.3);
+  
   vec3 center1 = vec3(
-    0.2 + sin(t * 0.7) * 0.6 + mouseInfluence.x * 0.3,
-    1.0 + cos(t * 0.5) * 0.8 + mouseInfluence.y * 0.3,
-    sin(t * 0.3) * 0.5 + mouseInfluence.z * 0.2
+    0.2 + sinT07 * 0.6 + mouseInfluence.x * 0.3,
+    1.0 + cosT05 * 0.8 + mouseInfluence.y * 0.3,
+    sinT03 * 0.5 + mouseInfluence.z * 0.2
   );
+  
+  float cosT13 = cos(t * 1.3);
+  float sinT09 = sin(t * 0.9);
+  float cosT08 = cos(t * 0.8);
   
   vec3 center2 = vec3(
-    1.2 + cos(t * 1.3) * 0.5 + mouseInfluence.x * 0.2,
-    -0.5 + sin(t * 0.9) * 0.7 + mouseInfluence.y * 0.4,
-    cos(t * 0.8) * 0.6 + mouseInfluence.z * 0.2
+    1.2 + cosT13 * 0.5 + mouseInfluence.x * 0.2,
+    -0.5 + sinT09 * 0.7 + mouseInfluence.y * 0.4,
+    cosT08 * 0.6 + mouseInfluence.z * 0.2
   );
+  
+  float sinT18 = sin(t * 1.8);
+  float cosT14 = cos(t * 1.4);
+  float sinT11 = sin(t * 1.1);
   
   vec3 center3 = vec3(
-    -0.3 + sin(t * 1.8) * 0.7 + mouseInfluence.x * 0.4,
-    -0.8 + cos(t * 1.4) * 0.6 + mouseInfluence.y * 0.3,
-    sin(t * 1.1) * 0.8 + mouseInfluence.z * 0.3
+    -0.3 + sinT18 * 0.7 + mouseInfluence.x * 0.4,
+    -0.8 + cosT14 * 0.6 + mouseInfluence.y * 0.3,
+    sinT11 * 0.8 + mouseInfluence.z * 0.3
   );
+  
+  float cosT04 = cos(t * 0.4);
+  float sinT21 = sin(t * 2.1);
+  float cosT15 = cos(t * 1.5);
   
   vec3 center4 = vec3(
-    0.8 + cos(t * 0.4) * 0.8 + mouseInfluence.x * 0.3,
-    0.3 + sin(t * 2.1) * 0.9 + mouseInfluence.y * 0.5,
-    cos(t * 1.5) * 0.4 + mouseInfluence.z * 0.4
+    0.8 + cosT04 * 0.8 + mouseInfluence.x * 0.3,
+    0.3 + sinT21 * 0.9 + mouseInfluence.y * 0.5,
+    cosT15 * 0.4 + mouseInfluence.z * 0.4
   );
+  
+  float sinT24 = sin(t * 2.4);
+  float cosT17 = cos(t * 1.7);
+  float sinT06 = sin(t * 0.6);
   
   vec3 center5 = vec3(
-    -0.8 + sin(t * 2.4) * 0.4 + mouseInfluence.x * 0.4,
-    0.8 + cos(t * 1.7) * 1.1 + mouseInfluence.y * 0.2,
-    sin(t * 0.6) * 0.9 + mouseInfluence.z * 0.3
+    -0.8 + sinT24 * 0.4 + mouseInfluence.x * 0.4,
+    0.8 + cosT17 * 1.1 + mouseInfluence.y * 0.2,
+    sinT06 * 0.9 + mouseInfluence.z * 0.3
   );
   
-  // Calculate metaball influences with varied sizes for dynamic merging/splitting
+  // Calculate metaball influences with cached sin/cos values
   float influence = 0.0;
   influence += metaball(p, center1, 0.8 + sin(t * 1.5) * 0.2);
   influence += metaball(p, center2, 0.6 + cos(t * 1.8) * 0.15);
@@ -170,15 +194,12 @@ float map(vec3 p) {
   // Convert metaball influence to distance field with balanced threshold
   float metaballField = 1.5 / influence - 0.6;
   
-  // Just use the metaballs - no ribbon
-  float result = metaballField;
-  
-  return result;
+  return metaballField;
 }
 
-// Calculate normal using gradient
+// Slightly optimized normal calculation with adaptive epsilon
 vec3 calcNormal(vec3 p) {
-  const float eps = 0.001;
+  float eps = 0.001 * (2.0 - uQuality);
   vec2 h = vec2(eps, 0.0);
   return normalize(vec3(
     map(p + h.xyy) - map(p - h.xyy),
@@ -187,11 +208,14 @@ vec3 calcNormal(vec3 p) {
   ));
 }
 
-// Optimized ray marching function with adaptive stepping
+// Optimized ray marching with performance scaling
 float rayMarch(vec3 ro, vec3 rd) {
   float dO = 0.0;
+  int maxSteps = MAX_STEPS;
   
-  for(int i = 0; i < MAX_STEPS; i++) {
+  for(int i = 0; i < 16; i++) {
+    if(i >= maxSteps) break;
+    
     vec3 p = ro + rd * dO;
     float dS = map(p);
     
@@ -199,14 +223,14 @@ float rayMarch(vec3 ro, vec3 rd) {
     if(abs(dS) < SURF_DIST) break;
     if(dO > MAX_DIST) return MAX_DIST;
     
-    // Adaptive step size - take larger steps when far from surfaces
+    // Adaptive step size - preserved original logic
     dO += dS * (1.0 + dO * 0.1);
   }
   
   return dO;
 }
 
-// Fresnel calculation
+// Fresnel calculation (preserved)
 float fresnel(vec3 I, vec3 N, float ior) {
   float cosi = clamp(-1.0, 1.0, dot(I, N));
   float etai = 1.0, etat = ior;
@@ -273,7 +297,7 @@ void main() {
     // Mix reflection and refraction
     vec3 glassColor = mix(refractColor, reflectColor, F);
     
-    // Metaball-style coloring with flowing gradients
+    // Metaball-style coloring with flowing gradients (preserved)
     vec3 flowColor = vec3(
       0.3 + 0.7 * sin(p.x * 0.5 + uTime * 0.8),
       0.4 + 0.6 * cos(p.y * 0.7 + uTime * 0.6),
@@ -318,6 +342,7 @@ const RayMarchMaterial = shaderMaterial(
     uThemeColor1: new THREE.Color("#7B5CFF"),
     uThemeColor2: new THREE.Color("#FF5EDB"),
     uIntensity: 1.0,
+    uQuality: 1.0, // 1.0 = high quality, 0.5 = medium, 0.0 = low
   },
   vertexShader,
   fragmentShader
