@@ -131,45 +131,49 @@ export function AboutSection() {
               <Calendar className="size-6 text-[hsl(var(--portfolio-primary))]" />
               My Journey
             </h3>
-            <div className="space-y-6">
-              {timeline.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative border-l-2 border-[hsl(var(--portfolio-primary))] pl-8 last:border-l-0"
-                >
-                  <div className="absolute -left-2 top-0 size-4 rounded-full bg-[hsl(var(--portfolio-primary))]" />
-                  <Card className="glass p-4 transition-shadow hover:shadow-md">
-                    <CardContent className="p-0">
-                      <div className="mb-2 flex items-center gap-2">
-                        <Badge
-                          variant={
-                            item.type === "work"
-                              ? "default"
-                              : item.type === "education"
-                              ? "secondary"
-                              : "outline"
-                          }
-                        >
-                          {item.year}
-                        </Badge>
-                        <MapPin className="size-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">
-                          {item.location}
-                        </span>
-                      </div>
-                      <h4 className="mb-1 text-lg font-semibold">
-                        {item.title}
-                      </h4>
-                      <p className="mb-2 font-medium text-[hsl(var(--portfolio-primary))]">
-                        {item.company}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
+            <div className="relative">
+              <div className="space-y-6">
+                {timeline.map((item, index) => (
+                  <div key={index} className="relative pl-8">
+                    {/* Timeline line segment - only show if not the last item */}
+                    {index < timeline.length - 1 && (
+                      <div className="absolute left-[7px] top-8 h-[calc(100%+1.5rem)] w-0.5 bg-[hsl(var(--portfolio-primary))]" />
+                    )}
+                    {/* Timeline dot */}
+                    <div className="absolute left-0 top-4 size-4 rounded-full border-2 border-background bg-[hsl(var(--portfolio-primary))]" />
+                    <Card className="glass p-4 transition-shadow hover:shadow-md">
+                      <CardContent className="p-0">
+                        <div className="mb-2 flex items-center gap-2">
+                          <Badge
+                            variant={
+                              item.type === "work"
+                                ? "default"
+                                : item.type === "education"
+                                ? "secondary"
+                                : "outline"
+                            }
+                          >
+                            {item.year}
+                          </Badge>
+                          <MapPin className="size-4 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">
+                            {item.location}
+                          </span>
+                        </div>
+                        <h4 className="mb-1 text-lg font-semibold">
+                          {item.title}
+                        </h4>
+                        <p className="mb-2 font-medium text-[hsl(var(--portfolio-primary))]">
+                          {item.company}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {item.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
 
