@@ -19,11 +19,11 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        glass: "glass hover:scale-105 transition-transform",
+        glass: "glass transition-transform hover:scale-105",
         "glass-primary":
-          "glass bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] border-0 hover:scale-105 transition-transform",
+          "glass border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] transition-transform hover:scale-105",
         "glass-outline":
-          "glass border-[hsl(var(--portfolio-glass-border))] hover:bg-[hsl(var(--portfolio-primary))] hover:text-white hover:scale-105 transition-all",
+          "glass border-[hsl(var(--portfolio-glass-border))] transition-all hover:scale-105 hover:bg-[hsl(var(--portfolio-primary))] hover:text-white",
       },
       size: {
         default: "h-9 px-4 py-2",

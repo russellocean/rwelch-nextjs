@@ -403,7 +403,7 @@ export default function Hero3D() {
   if (!isVisible) {
     return (
       <div
-        className="absolute inset-0 w-full h-full -z-10"
+        className="absolute inset-0 -z-10 size-full"
         data-hero-3d
         style={{
           background:
@@ -438,7 +438,7 @@ export default function Hero3D() {
       };
 
   return (
-    <div className="absolute inset-0 w-full h-full -z-10">
+    <div className="absolute inset-0 -z-10 size-full">
       <div style={canvasStyle}>
         <Canvas
           camera={{ position: [0, 0, 5], fov: 65 }}
@@ -469,7 +469,7 @@ export default function Hero3D() {
       {/* Theme-aware mobile text readability overlay */}
       {performanceConfig.mobile && (
         <div
-          className="absolute inset-0 -z-5"
+          className="absolute inset-0 -z-10"
           style={{
             background:
               resolvedTheme === "light"

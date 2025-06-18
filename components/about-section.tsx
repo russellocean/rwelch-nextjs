@@ -72,24 +72,24 @@ const stats = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-20 relative overflow-hidden">
+    <section id="about" className="relative overflow-hidden py-20">
       {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-10" />
+        <div className="absolute right-1/4 top-1/3 size-72 rounded-full bg-[hsl(var(--portfolio-accent))] opacity-10 mix-blend-multiply blur-xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header - keep simple fade in */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold gradient-text mb-4">
+          <h2 className="gradient-text mb-4 text-4xl font-bold sm:text-5xl">
             About Me
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
             Passionate about creating digital experiences that make complex
             problems simple and enjoyable to solve.
           </p>
@@ -100,14 +100,14 @@ export function AboutSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
+          className="mb-16 grid grid-cols-2 gap-6 md:grid-cols-4"
         >
           {stats.map((stat) => (
             <div key={stat.label} className="group">
-              <Card className="glass text-center p-6 hover:shadow-lg transition-shadow">
+              <Card className="glass p-6 text-center transition-shadow hover:shadow-lg">
                 <CardContent className="p-0">
-                  <stat.icon className="w-8 h-8 mx-auto mb-3 text-[hsl(var(--portfolio-primary))]" />
-                  <div className="text-3xl font-bold gradient-text mb-1">
+                  <stat.icon className="mx-auto mb-3 size-8 text-[hsl(var(--portfolio-primary))]" />
+                  <div className="gradient-text mb-1 text-3xl font-bold">
                     {stat.value}
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -119,7 +119,7 @@ export function AboutSection() {
           ))}
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid gap-12 lg:grid-cols-2">
           {/* Timeline - Simplified to one motion wrapper */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -127,20 +127,20 @@ export function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-              <Calendar className="w-6 h-6 text-[hsl(var(--portfolio-primary))]" />
+            <h3 className="mb-8 flex items-center gap-2 text-2xl font-bold">
+              <Calendar className="size-6 text-[hsl(var(--portfolio-primary))]" />
               My Journey
             </h3>
             <div className="space-y-6">
               {timeline.map((item, index) => (
                 <div
                   key={index}
-                  className="relative pl-8 border-l-2 border-[hsl(var(--portfolio-primary))] last:border-l-0"
+                  className="relative border-l-2 border-[hsl(var(--portfolio-primary))] pl-8 last:border-l-0"
                 >
-                  <div className="absolute -left-2 top-0 w-4 h-4 bg-[hsl(var(--portfolio-primary))] rounded-full" />
-                  <Card className="glass p-4 hover:shadow-md transition-shadow">
+                  <div className="absolute -left-2 top-0 size-4 rounded-full bg-[hsl(var(--portfolio-primary))]" />
+                  <Card className="glass p-4 transition-shadow hover:shadow-md">
                     <CardContent className="p-0">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="mb-2 flex items-center gap-2">
                         <Badge
                           variant={
                             item.type === "work"
@@ -152,15 +152,15 @@ export function AboutSection() {
                         >
                           {item.year}
                         </Badge>
-                        <MapPin className="w-4 h-4 text-muted-foreground" />
+                        <MapPin className="size-4 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">
                           {item.location}
                         </span>
                       </div>
-                      <h4 className="font-semibold text-lg mb-1">
+                      <h4 className="mb-1 text-lg font-semibold">
                         {item.title}
                       </h4>
-                      <p className="text-[hsl(var(--portfolio-primary))] font-medium mb-2">
+                      <p className="mb-2 font-medium text-[hsl(var(--portfolio-primary))]">
                         {item.company}
                       </p>
                       <p className="text-sm text-muted-foreground">
@@ -180,8 +180,8 @@ export function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-              <Palette className="w-6 h-6 text-[hsl(var(--portfolio-accent))]" />
+            <h3 className="mb-8 flex items-center gap-2 text-2xl font-bold">
+              <Palette className="size-6 text-[hsl(var(--portfolio-accent))]" />
               Skills & Technologies
             </h3>
             <div className="space-y-6">
@@ -189,7 +189,7 @@ export function AboutSection() {
                 <div key={skillGroup.category}>
                   <Card className="glass p-4">
                     <CardContent className="p-0">
-                      <h4 className="font-semibold mb-3 text-[hsl(var(--portfolio-accent))]">
+                      <h4 className="mb-3 font-semibold text-[hsl(var(--portfolio-accent))]">
                         {skillGroup.category}
                       </h4>
                       <div className="flex flex-wrap gap-2">
@@ -197,7 +197,7 @@ export function AboutSection() {
                           <Badge
                             key={skill}
                             variant="outline"
-                            className="hover:bg-[hsl(var(--portfolio-primary))] hover:text-white transition-colors"
+                            className="transition-colors hover:bg-[hsl(var(--portfolio-primary))] hover:text-white"
                           >
                             {skill}
                           </Badge>

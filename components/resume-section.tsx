@@ -95,30 +95,30 @@ export function ResumeSection() {
   };
 
   return (
-    <section id="resume" className="py-20 relative overflow-hidden">
+    <section id="resume" className="relative overflow-hidden py-20">
       {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-10" />
+        <div className="absolute bottom-1/4 right-1/3 size-80 rounded-full bg-[hsl(var(--portfolio-accent))] opacity-10 mix-blend-multiply blur-xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header - keep simple fade in */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold gradient-text mb-4">
+          <h2 className="gradient-text mb-4 text-4xl font-bold sm:text-5xl">
             Resume & Contact
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
             Get in touch or download my resume to learn more about my experience
             and skills.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid gap-8 lg:grid-cols-3">
           {/* Contact Card - simplified animation */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -127,19 +127,19 @@ export function ResumeSection() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-1"
           >
-            <Card className="glass p-6 sticky top-24">
-              <CardHeader className="p-0 mb-6">
-                <h3 className="text-2xl font-bold gradient-text">
+            <Card className="glass sticky top-24 p-6">
+              <CardHeader className="mb-6 p-0">
+                <h3 className="gradient-text text-2xl font-bold">
                   Get In Touch
                 </h3>
                 <p className="text-muted-foreground">
                   Let&apos;s discuss opportunities and collaborations.
                 </p>
               </CardHeader>
-              <CardContent className="p-0 space-y-4">
+              <CardContent className="space-y-4 p-0">
                 {/* Email */}
-                <div className="flex items-center gap-3 p-3 glass rounded-lg hover:shadow-md transition-shadow">
-                  <Mail className="w-5 h-5 text-[hsl(var(--portfolio-primary))]" />
+                <div className="glass flex items-center gap-3 rounded-lg p-3 transition-shadow hover:shadow-md">
+                  <Mail className="size-5 text-[hsl(var(--portfolio-primary))]" />
                   <div className="flex-1">
                     <div className="font-medium">{contactInfo.email}</div>
                   </div>
@@ -150,27 +150,27 @@ export function ResumeSection() {
                     className="p-2"
                   >
                     {copiedEmail ? (
-                      <Check className="w-4 h-4 text-green-500" />
+                      <Check className="size-4 text-green-500" />
                     ) : (
-                      <Copy className="w-4 h-4" />
+                      <Copy className="size-4" />
                     )}
                   </Button>
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-center gap-3 p-3 glass rounded-lg">
-                  <Phone className="w-5 h-5 text-[hsl(var(--portfolio-primary))]" />
+                <div className="glass flex items-center gap-3 rounded-lg p-3">
+                  <Phone className="size-5 text-[hsl(var(--portfolio-primary))]" />
                   <div className="font-medium">{contactInfo.phone}</div>
                 </div>
 
                 {/* Location */}
-                <div className="flex items-center gap-3 p-3 glass rounded-lg">
-                  <MapPin className="w-5 h-5 text-[hsl(var(--portfolio-primary))]" />
+                <div className="glass flex items-center gap-3 rounded-lg p-3">
+                  <MapPin className="size-5 text-[hsl(var(--portfolio-primary))]" />
                   <div className="font-medium">{contactInfo.location}</div>
                 </div>
 
                 {/* Social Links */}
-                <div className="pt-4 border-t border-[hsl(var(--portfolio-glass-border))]">
+                <div className="border-t border-[hsl(var(--portfolio-glass-border))] pt-4">
                   <div className="grid grid-cols-2 gap-3">
                     <Button
                       variant="glass-outline"
@@ -183,7 +183,7 @@ export function ResumeSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Linkedin className="w-4 h-4 mr-2" />
+                        <Linkedin className="mr-2 size-4" />
                         LinkedIn
                       </a>
                     </Button>
@@ -198,7 +198,7 @@ export function ResumeSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Github className="w-4 h-4 mr-2" />
+                        <Github className="mr-2 size-4" />
                         GitHub
                       </a>
                     </Button>
@@ -207,7 +207,7 @@ export function ResumeSection() {
 
                 {/* Download Resume */}
                 <Button variant="glass-primary" size="lg" className="w-full">
-                  <Download className="w-4 h-4 mr-2" />
+                  <Download className="mr-2 size-4" />
                   Download Resume
                 </Button>
               </CardContent>
@@ -220,27 +220,27 @@ export function ResumeSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-2 space-y-8"
+            className="space-y-8 lg:col-span-2"
           >
             {/* Experience */}
             <Card className="glass p-6">
-              <CardHeader className="p-0 mb-6">
+              <CardHeader className="mb-6 p-0">
                 <h3 className="text-2xl font-bold text-[hsl(var(--portfolio-primary))]">
                   Professional Experience
                 </h3>
               </CardHeader>
-              <CardContent className="p-0 space-y-6">
+              <CardContent className="space-y-6 p-0">
                 {experience.map((job, index) => (
                   <div
                     key={index}
-                    className="border-l-2 border-[hsl(var(--portfolio-primary))] pl-6 relative"
+                    className="relative border-l-2 border-[hsl(var(--portfolio-primary))] pl-6"
                   >
-                    <div className="absolute -left-2 top-0 w-4 h-4 bg-[hsl(var(--portfolio-primary))] rounded-full" />
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                    <div className="absolute -left-2 top-0 size-4 rounded-full bg-[hsl(var(--portfolio-primary))]" />
+                    <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                       <h4 className="text-lg font-semibold">{job.title}</h4>
                       <Badge variant="outline">{job.period}</Badge>
                     </div>
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="mb-3 flex items-center gap-2">
                       <span className="font-medium text-[hsl(var(--portfolio-accent))]">
                         {job.company}
                       </span>
@@ -252,9 +252,9 @@ export function ResumeSection() {
                       {job.achievements.map((achievement, achievementIndex) => (
                         <li
                           key={achievementIndex}
-                          className="text-sm text-muted-foreground flex items-start gap-2"
+                          className="flex items-start gap-2 text-sm text-muted-foreground"
                         >
-                          <span className="w-2 h-2 bg-[hsl(var(--portfolio-accent))] rounded-full mt-2 flex-shrink-0" />
+                          <span className="mt-2 size-2 shrink-0 rounded-full bg-[hsl(var(--portfolio-accent))]" />
                           {achievement}
                         </li>
                       ))}
@@ -265,26 +265,26 @@ export function ResumeSection() {
             </Card>
 
             {/* Education & Certifications */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {/* Education */}
               <Card className="glass p-6">
-                <CardHeader className="p-0 mb-4">
+                <CardHeader className="mb-4 p-0">
                   <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
                     Education
                   </h3>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div>
-                    <h4 className="font-semibold mb-1">{education.degree}</h4>
-                    <p className="text-[hsl(var(--portfolio-primary))] font-medium">
+                    <h4 className="mb-1 font-semibold">{education.degree}</h4>
+                    <p className="font-medium text-[hsl(var(--portfolio-primary))]">
                       {education.school}
                     </p>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                    <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
                       <span>{education.period}</span>
                       <span>•</span>
                       <span>{education.location}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       GPA: {education.gpa}
                     </p>
                   </div>
@@ -293,12 +293,12 @@ export function ResumeSection() {
 
               {/* Certifications & Awards */}
               <Card className="glass p-6">
-                <CardHeader className="p-0 mb-4">
+                <CardHeader className="mb-4 p-0">
                   <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
                     Certifications & Awards
                   </h3>
                 </CardHeader>
-                <CardContent className="p-0 space-y-4">
+                <CardContent className="space-y-4 p-0">
                   {certifications.map((cert, index) => (
                     <div key={index}>
                       <h4 className="font-semibold">{cert.name}</h4>
@@ -311,8 +311,8 @@ export function ResumeSection() {
                     </div>
                   ))}
 
-                  <div className="pt-4 border-t border-[hsl(var(--portfolio-glass-border))]">
-                    <h4 className="font-semibold mb-2">Awards</h4>
+                  <div className="border-t border-[hsl(var(--portfolio-glass-border))] pt-4">
+                    <h4 className="mb-2 font-semibold">Awards</h4>
                     <ul className="space-y-1">
                       {awards.map((award, index) => (
                         <li

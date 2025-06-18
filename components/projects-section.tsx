@@ -153,24 +153,24 @@ const categories = [
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="py-20 relative overflow-hidden">
+    <section id="projects" className="relative overflow-hidden py-20">
       {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-[hsl(var(--portfolio-primary))] rounded-full mix-blend-multiply filter blur-xl opacity-10" />
+        <div className="absolute left-1/3 top-1/4 size-96 rounded-full bg-[hsl(var(--portfolio-primary))] opacity-10 mix-blend-multiply blur-xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header - keep simple fade in */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold gradient-text mb-4">
+          <h2 className="gradient-text mb-4 text-4xl font-bold sm:text-5xl">
             Featured Projects
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
             A showcase of my work spanning e-commerce platforms, internal tools,
             and interactive experiences.
           </p>
@@ -181,7 +181,7 @@ export function ProjectsSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-2 mb-12"
+          className="mb-12 flex flex-wrap justify-center gap-2"
         >
           {categories.map((category) => (
             <Button
@@ -200,53 +200,53 @@ export function ProjectsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {projects.map((project) => (
             <div key={project.id} className="group">
-              <Card className="glass overflow-hidden h-full hover:shadow-lg transition-shadow">
+              <Card className="glass h-full overflow-hidden transition-shadow hover:shadow-lg">
                 {/* Project Image */}
                 <div className="relative overflow-hidden">
-                  <div className="aspect-video bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] flex items-center justify-center">
-                    <div className="text-white text-lg font-semibold">
+                  <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))]">
+                    <div className="text-lg font-semibold text-white">
                       {project.title}
                     </div>
                   </div>
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                  <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                     <Button size="sm" variant="glass">
-                      <ExternalLink className="w-4 h-4 mr-2" />
+                      <ExternalLink className="mr-2 size-4" />
                       View
                     </Button>
                     <Button size="sm" variant="glass">
-                      <Github className="w-4 h-4 mr-2" />
+                      <Github className="mr-2 size-4" />
                       Code
                     </Button>
                   </div>
-                  <Badge className="absolute top-3 right-3 bg-[hsl(var(--portfolio-accent))] text-white">
+                  <Badge className="absolute right-3 top-3 bg-[hsl(var(--portfolio-accent))] text-white">
                     {project.status}
                   </Badge>
                 </div>
 
                 <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <Badge variant="outline">{project.category}</Badge>
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="size-4" />
                       {project.year}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold group-hover:gradient-text transition-all">
+                  <h3 className="group-hover:gradient-text text-xl font-bold transition-all">
                     {project.title}
                   </h3>
                 </CardHeader>
 
                 <CardContent className="pt-0">
-                  <p className="text-muted-foreground mb-4 line-clamp-3">
+                  <p className="mb-4 line-clamp-3 text-muted-foreground">
                     {project.description}
                   </p>
 
                   {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-1 mb-4">
+                  <div className="mb-4 flex flex-wrap gap-1">
                     {project.tech.slice(0, 3).map((tech) => (
                       <Badge key={tech} variant="secondary" className="text-xs">
                         {tech}
@@ -262,11 +262,11 @@ export function ProjectsSection() {
                   {/* Stats */}
                   <div className="grid grid-cols-3 gap-2 text-center text-xs">
                     {Object.entries(project.stats).map(([key, value]) => (
-                      <div key={key} className="bg-muted/30 rounded p-2">
+                      <div key={key} className="rounded bg-muted/30 p-2">
                         <div className="font-semibold text-[hsl(var(--portfolio-primary))]">
                           {value}
                         </div>
-                        <div className="text-muted-foreground capitalize">
+                        <div className="capitalize text-muted-foreground">
                           {key}
                         </div>
                       </div>
@@ -283,9 +283,9 @@ export function ProjectsSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="mt-16 text-center"
         >
-          <p className="text-muted-foreground mb-6">
+          <p className="mb-6 text-muted-foreground">
             Want to see more projects or discuss a potential collaboration?
           </p>
           <Button variant="glass-primary" size="lg">

@@ -68,9 +68,9 @@ const shouldDisable3D = () => {
 // Simple CSS-based background fallback
 function SimpleFallback() {
   return (
-    <div className="absolute inset-0 w-full h-full -z-10">
+    <div className="absolute inset-0 -z-10 size-full">
       <div
-        className="w-full h-full"
+        className="size-full"
         style={{
           background: `
             radial-gradient(circle at 30% 20%, rgba(123, 92, 255, 0.15) 0%, transparent 50%),
@@ -97,15 +97,15 @@ export function HeroSection() {
 
   if (!mounted) {
     return (
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
         <SimpleFallback />
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container relative z-10 mx-auto px-4">
           <div className="text-center">
-            <div className="h-16 w-64 mx-auto bg-muted/20 animate-pulse rounded-lg mb-6" />
-            <div className="h-6 w-96 mx-auto bg-muted/20 animate-pulse rounded mb-8" />
-            <div className="flex gap-4 justify-center">
-              <div className="h-10 w-32 bg-muted/20 animate-pulse rounded" />
-              <div className="h-10 w-32 bg-muted/20 animate-pulse rounded" />
+            <div className="mx-auto mb-6 h-16 w-64 animate-pulse rounded-lg bg-muted/20" />
+            <div className="mx-auto mb-8 h-6 w-96 animate-pulse rounded bg-muted/20" />
+            <div className="flex justify-center gap-4">
+              <div className="h-10 w-32 animate-pulse rounded bg-muted/20" />
+              <div className="h-10 w-32 animate-pulse rounded bg-muted/20" />
             </div>
           </div>
         </div>
@@ -116,7 +116,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative pb-20"
+      className="relative flex min-h-screen items-center justify-center pb-20"
     >
       {/* 3D Background or Fallback */}
       {disable3D ? (
@@ -129,24 +129,24 @@ export function HeroSection() {
 
       {/* Background Elements */}
       <div className="absolute inset-0 -z-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[hsl(var(--portfolio-primary))] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float hidden md:block" />
+        <div className="animate-float absolute left-1/4 top-1/4 hidden size-96 rounded-full bg-[hsl(var(--portfolio-primary))] opacity-20 mix-blend-multiply blur-xl md:block" />
         <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[hsl(var(--portfolio-accent))] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"
+          className="animate-float absolute bottom-1/4 right-1/4 size-96 rounded-full bg-[hsl(var(--portfolio-accent))] opacity-20 mix-blend-multiply blur-xl"
           style={{ animationDelay: "2s" }}
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 lg:px-8">
+        <div className="relative z-10 grid items-center gap-12 lg:grid-cols-2">
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8 relative"
+            className="relative space-y-8"
           >
             {/* Mobile text readability backdrop */}
-            <div className="absolute inset-0 rounded-3xl bg-background/40 backdrop-blur-sm md:hidden -z-10 -m-4" />
+            <div className="absolute inset-0 -z-10 -m-4 rounded-3xl bg-background/40 backdrop-blur-sm md:hidden" />
 
             {/* Greeting */}
             <motion.div
@@ -158,7 +158,7 @@ export function HeroSection() {
               <p className="text-lg text-muted-foreground">
                 Hey there, I&apos;m
               </p>
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
                 <span className="gradient-text">Russell Welch</span>
               </h1>
             </motion.div>
@@ -168,7 +168,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-xl sm:text-2xl text-muted-foreground font-medium"
+              className="text-xl font-medium text-muted-foreground sm:text-2xl"
             >
               Building playful interfaces that power serious results.
             </motion.p>
@@ -178,7 +178,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="space-y-4 text-muted-foreground leading-relaxed"
+              className="space-y-4 leading-relaxed text-muted-foreground"
             >
               <p>
                 I&apos;m a full-stack developer who believes software can be
@@ -226,9 +226,9 @@ export function HeroSection() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass p-3 rounded-full hover:bg-[hsl(var(--portfolio-primary))] hover:text-white transition-colors group"
+                  className="glass group rounded-full p-3 transition-colors hover:bg-[hsl(var(--portfolio-primary))] hover:text-white"
                 >
-                  <link.icon className="w-5 h-5" />
+                  <link.icon className="size-5" />
                   <span className="sr-only">{link.name}</span>
                 </motion.a>
               ))}
@@ -244,7 +244,7 @@ export function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.4 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
@@ -252,7 +252,7 @@ export function HeroSection() {
             className="flex flex-col items-center gap-2 text-muted-foreground"
           >
             <span className="text-sm">Scroll to explore</span>
-            <ArrowDown className="w-4 h-4" />
+            <ArrowDown className="size-4" />
           </motion.div>
         </motion.div>
       </div>
