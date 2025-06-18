@@ -11,12 +11,12 @@ const Hero3D = lazy(() => import("./hero-3d"));
 const socialLinks = [
   {
     name: "GitHub",
-    href: "https://github.com/russelldoescode",
+    href: "https://github.com/russellocean",
     icon: Github,
   },
   {
     name: "LinkedIn",
-    href: "https://linkedin.com/in/russellwelch",
+    href: "https://linkedin.com/in/russelldoescode",
     icon: Linkedin,
   },
   {
