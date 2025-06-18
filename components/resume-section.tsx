@@ -21,8 +21,8 @@ const contactInfo = {
   phone: "(843) 754-2302",
   location: "Charleston, SC",
   website: "russellwelch.dev",
-  linkedin: "linkedin.com/in/russellwelch",
-  github: "github.com/russelldoescode",
+  linkedin: "linkedin.com/in/russelldoescode",
+  github: "github.com/russellocean",
 };
 
 const experience = [
@@ -229,38 +229,46 @@ export function ResumeSection() {
                   Professional Experience
                 </h3>
               </CardHeader>
-              <CardContent className="space-y-6 p-0">
-                {experience.map((job, index) => (
-                  <div
-                    key={index}
-                    className="relative border-l-2 border-[hsl(var(--portfolio-primary))] pl-6"
-                  >
-                    <div className="absolute -left-2 top-0 size-4 rounded-full bg-[hsl(var(--portfolio-primary))]" />
-                    <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                      <h4 className="text-lg font-semibold">{job.title}</h4>
-                      <Badge variant="outline">{job.period}</Badge>
-                    </div>
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="font-medium text-[hsl(var(--portfolio-accent))]">
-                        {job.company}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        • {job.location}
-                      </span>
-                    </div>
-                    <ul className="space-y-2">
-                      {job.achievements.map((achievement, achievementIndex) => (
-                        <li
-                          key={achievementIndex}
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
-                        >
-                          <span className="mt-2 size-2 shrink-0 rounded-full bg-[hsl(var(--portfolio-accent))]" />
-                          {achievement}
-                        </li>
-                      ))}
-                    </ul>
+              <CardContent className="p-0">
+                <div className="relative">
+                  <div className="space-y-6">
+                    {experience.map((job, index) => (
+                      <div key={index} className="relative pl-8">
+                        {/* Timeline line segment - only show if not the last item */}
+                        {index < experience.length - 1 && (
+                          <div className="absolute left-[7px] top-4 h-[calc(100%+1.5rem)] w-0.5 bg-[hsl(var(--portfolio-primary))]" />
+                        )}
+                        {/* Timeline dot - aligned with job title */}
+                        <div className="absolute left-0 top-0 size-4 rounded-full border-2 border-background bg-[hsl(var(--portfolio-primary))]" />
+                        <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                          <h4 className="text-lg font-semibold">{job.title}</h4>
+                          <Badge variant="outline">{job.period}</Badge>
+                        </div>
+                        <div className="mb-3 flex items-center gap-2">
+                          <span className="font-medium text-[hsl(var(--portfolio-accent))]">
+                            {job.company}
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            • {job.location}
+                          </span>
+                        </div>
+                        <ul className="space-y-2">
+                          {job.achievements.map(
+                            (achievement, achievementIndex) => (
+                              <li
+                                key={achievementIndex}
+                                className="flex items-start gap-2 text-sm text-muted-foreground"
+                              >
+                                <span className="mt-2 size-2 shrink-0 rounded-full bg-[hsl(var(--portfolio-accent))]" />
+                                {achievement}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </CardContent>
             </Card>
 
