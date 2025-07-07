@@ -1,59 +1,54 @@
-"use client";
-
-import { motion } from "motion/react";
-import {
-  Download,
-  Mail,
-  Phone,
-  MapPin,
-  Linkedin,
-  Github,
-  Copy,
-  Check,
-} from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-
-const contactInfo = {
-  email: "russellwelch17@gmail.com",
-  phone: "(843) 754-2302",
-  location: "Charleston, SC",
-  website: "russellwelch.dev",
-  linkedin: "linkedin.com/in/russelldoescode",
-  github: "github.com/russellocean",
-};
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  FadeInUp,
+  FadeInLeft,
+  FadeInRight,
+} from "@/components/motion-wrappers";
+import { ContactCard } from "@/components/contact-card";
 
 const experience = [
   {
-    title: "Lead Software Engineer",
+    title: "Full Stack Developer",
     company: "Goldfinger Monitors",
-    period: "May 2023 - Present",
+    period: "May 2025 - Present",
     location: "Charleston, SC",
     achievements: [
-      "Lead design, development, and deployment of full-stack web applications using React, Next.js, TypeScript, and Supabase",
-      "Architect internal software solutions for inventory management, production tracking, and manufacturing data collection",
-      "Collaborate with cross-functional teams to develop interactive marketing materials using Unity and C#",
-      "Oversee customer-facing platforms including RMA portal, improving customer satisfaction and reducing response times",
+      "Lead software development initiatives in full-time office role, managing website redesign and internal tool development",
+      "Expand RMA portal functionality for distributor network with real-time analytics and multi-location coordination",
+      "Develop internal project management software to streamline company workflows and processes",
+      "Collaborate with cross-functional teams to deliver scalable web applications using Next.js, TypeScript, and Supabase",
     ],
   },
   {
-    title: "Software Engineer Intern",
+    title: "Full Stack Developer",
     company: "Goldfinger Monitors",
-    period: "June 2022 - May 2023",
-    location: "Charleston, SC",
+    period: "Aug 2023 - May 2025",
+    location: "Charleston, SC (Hybrid)",
     achievements: [
-      "Developed internal tools using C# and .NET Framework for LED controller boards and hardware automation",
-      "Built and maintained Java-based Point of Sale (POS) systems on Linux environments",
-      "Transitioned from RMA technician role, bringing hardware troubleshooting expertise to software development",
-      "Utilized databases and spreadsheets for comprehensive inventory tracking and repair documentation",
+      "Promoted to full stack developer, built customer-facing RMA portal with QR code scanning and deep analytics",
+      "Developed internal parts database (Goldfinger MANAGE) with 1700+ unique parts, coordinating US and Vietnam facilities",
+      "Created interactive Unity games for trade shows including roulette wheel, collection, and slot machine demos",
+      "Led complete website redesign for Goldfinger Monitors, improving user experience and modern responsive design",
+      "Built Dare2Watch luxury e-commerce platform as side project, handling 20K+ visitors and 65 watch sales",
+    ],
+  },
+  {
+    title: "Software Engineer",
+    company: "Goldfinger Monitors",
+    period: "Jun 2022 - Aug 2023",
+    location: "Charleston, SC (Hybrid)",
+    achievements: [
+      "Started as software engineer with hybrid schedule, working in-office during school breaks and remote during academic year",
+      "Built foundational systems for internal parts database and manufacturing synchronization tools",
+      "Maintained legacy POS system and provided critical updates for customer stability",
+      "Created animated marketing assets for trade shows, showcasing touchscreen monitor capabilities",
     ],
   },
   {
     title: "IT Specialist Intern",
     company: "James Island Charter High School",
-    period: "June 2021 - August 2021",
+    period: "2021",
     location: "Charleston, SC",
     achievements: [
       "Provided comprehensive IT support for faculty across Windows and macOS systems",
@@ -86,14 +81,6 @@ const awards = [
 ];
 
 export function ResumeSection() {
-  const [copiedEmail, setCopiedEmail] = useState(false);
-
-  const copyEmail = async () => {
-    await navigator.clipboard.writeText(contactInfo.email);
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
-  };
-
   return (
     <section id="resume" className="relative overflow-hidden py-20">
       {/* Simplified background - remove animate-float for better performance */}
@@ -103,12 +90,7 @@ export function ResumeSection() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header - keep simple fade in */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 text-center"
-        >
+        <FadeInUp className="mb-16 text-center">
           <h2 className="gradient-text mb-4 text-4xl font-bold sm:text-5xl">
             Resume & Contact
           </h2>
@@ -116,114 +98,18 @@ export function ResumeSection() {
             Get in touch or download my resume to learn more about my experience
             and skills.
           </p>
-        </motion.div>
+        </FadeInUp>
 
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Contact Card - simplified animation */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-1"
-          >
-            <Card className="glass sticky top-24 p-6">
-              <CardHeader className="mb-6 p-0">
-                <h3 className="gradient-text text-2xl font-bold">
-                  Get In Touch
-                </h3>
-                <p className="text-muted-foreground">
-                  Let&apos;s discuss opportunities and collaborations.
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-4 p-0">
-                {/* Email */}
-                <div className="glass flex items-center gap-3 rounded-lg p-3 transition-shadow hover:shadow-md">
-                  <Mail className="size-5 text-[hsl(var(--portfolio-primary))]" />
-                  <div className="flex-1">
-                    <div className="font-medium">{contactInfo.email}</div>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={copyEmail}
-                    className="p-2"
-                  >
-                    {copiedEmail ? (
-                      <Check className="size-4 text-green-500" />
-                    ) : (
-                      <Copy className="size-4" />
-                    )}
-                  </Button>
-                </div>
-
-                {/* Phone */}
-                <div className="glass flex items-center gap-3 rounded-lg p-3">
-                  <Phone className="size-5 text-[hsl(var(--portfolio-primary))]" />
-                  <div className="font-medium">{contactInfo.phone}</div>
-                </div>
-
-                {/* Location */}
-                <div className="glass flex items-center gap-3 rounded-lg p-3">
-                  <MapPin className="size-5 text-[hsl(var(--portfolio-primary))]" />
-                  <div className="font-medium">{contactInfo.location}</div>
-                </div>
-
-                {/* Social Links */}
-                <div className="border-t border-[hsl(var(--portfolio-glass-border))] pt-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    <Button
-                      variant="glass-outline"
-                      size="sm"
-                      className="justify-start"
-                      asChild
-                    >
-                      <a
-                        href={`https://${contactInfo.linkedin}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Linkedin className="mr-2 size-4" />
-                        LinkedIn
-                      </a>
-                    </Button>
-                    <Button
-                      variant="glass-outline"
-                      size="sm"
-                      className="justify-start"
-                      asChild
-                    >
-                      <a
-                        href={`https://${contactInfo.github}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="mr-2 size-4" />
-                        GitHub
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Download Resume */}
-                <Button variant="glass-primary" size="lg" className="w-full">
-                  <Download className="mr-2 size-4" />
-                  Download Resume
-                </Button>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <FadeInLeft className="lg:col-span-1">
+            <ContactCard />
+          </FadeInLeft>
 
           {/* Resume Content - simplified animation */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8 lg:col-span-2"
-          >
+          <FadeInRight className="space-y-8 lg:col-span-2">
             {/* Experience */}
-            <Card className="glass p-6">
+            <Card className="garden-card p-6">
               <CardHeader className="mb-6 p-0">
                 <h3 className="text-2xl font-bold text-[hsl(var(--portfolio-primary))]">
                   Professional Experience
@@ -275,7 +161,7 @@ export function ResumeSection() {
             {/* Education & Certifications */}
             <div className="grid gap-6 md:grid-cols-2">
               {/* Education */}
-              <Card className="glass p-6">
+              <Card className="garden-card p-6">
                 <CardHeader className="mb-4 p-0">
                   <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
                     Education
@@ -300,7 +186,7 @@ export function ResumeSection() {
               </Card>
 
               {/* Certifications & Awards */}
-              <Card className="glass p-6">
+              <Card className="garden-card p-6">
                 <CardHeader className="mb-4 p-0">
                   <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
                     Certifications & Awards
@@ -335,7 +221,7 @@ export function ResumeSection() {
                 </CardContent>
               </Card>
             </div>
-          </motion.div>
+          </FadeInRight>
         </div>
       </div>
     </section>
