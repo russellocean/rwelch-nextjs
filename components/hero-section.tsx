@@ -203,11 +203,16 @@ export function HeroSection() {
               transition={{ duration: 0.6, delay: 1.0 }}
               className="flex flex-wrap gap-4"
             >
-              <Button variant="glass-primary" size="lg">
-                View My Work
+              <Button variant="gradient" size="lg" asChild>
+                <a href="#projects">View My Work</a>
               </Button>
-              <Button variant="glass-outline" size="lg">
-                Download Resume
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[hsl(var(--portfolio-primary))]/30 hover:border-[hsl(var(--portfolio-primary))]/50 hover:bg-[hsl(var(--portfolio-primary))]/5"
+                asChild
+              >
+                <a href="#resume">Download Resume</a>
               </Button>
             </motion.div>
 
@@ -226,7 +231,7 @@ export function HeroSection() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass group rounded-full p-3 transition-colors hover:bg-[hsl(var(--portfolio-primary))] hover:text-white"
+                  className="group rounded-full border border-[hsl(var(--portfolio-primary))]/20 bg-background/60 p-3 transition-all hover:border-[hsl(var(--portfolio-primary))]/40 hover:bg-[hsl(var(--portfolio-primary))]/10"
                 >
                   <link.icon className="size-5" />
                   <span className="sr-only">{link.name}</span>
