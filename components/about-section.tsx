@@ -1,9 +1,11 @@
-"use client";
-
-import { motion } from "motion/react";
 import { Calendar, MapPin, Award, Code, Database, Palette } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  FadeInUp,
+  FadeInLeft,
+  FadeInRight,
+} from "@/components/motion-wrappers";
 
 const timeline = [
   {
@@ -115,12 +117,7 @@ export function AboutSection() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header - keep simple fade in */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 text-center"
-        >
+        <FadeInUp className="mb-16 text-center">
           <h2 className="gradient-text mb-4 text-4xl font-bold sm:text-5xl">
             About Me
           </h2>
@@ -128,40 +125,32 @@ export function AboutSection() {
             Passionate about creating digital experiences that make complex
             problems simple and enjoyable to solve.
           </p>
-        </motion.div>
+        </FadeInUp>
 
         {/* Stats Grid - Simplified animation, group together instead of individual items */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 grid grid-cols-2 gap-6 md:grid-cols-4"
-        >
-          {stats.map((stat) => (
-            <div key={stat.label} className="group">
-              <Card className="glass p-6 text-center transition-shadow hover:shadow-lg">
-                <CardContent className="p-0">
-                  <stat.icon className="mx-auto mb-3 size-8 text-[hsl(var(--portfolio-primary))]" />
-                  <div className="gradient-text mb-1 text-3xl font-bold">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {stat.label}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          ))}
-        </motion.div>
+        <FadeInUp className="mb-16">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.label} className="group">
+                <Card className="garden-card p-6 text-center">
+                  <CardContent className="p-0">
+                    <stat.icon className="mx-auto mb-3 size-8 text-[hsl(var(--portfolio-primary))]" />
+                    <div className="gradient-text mb-1 text-3xl font-bold">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </FadeInUp>
 
         <div className="grid gap-12 lg:grid-cols-2">
           {/* Timeline - Simplified to one motion wrapper */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <FadeInLeft>
             <h3 className="mb-8 flex items-center gap-2 text-2xl font-bold">
               <Calendar className="size-6 text-[hsl(var(--portfolio-primary))]" />
               My Journey
@@ -176,7 +165,7 @@ export function AboutSection() {
                     )}
                     {/* Timeline dot */}
                     <div className="absolute left-0 top-4 size-4 rounded-full border-2 border-background bg-[hsl(var(--portfolio-primary))]" />
-                    <Card className="glass p-4 transition-shadow hover:shadow-md">
+                    <Card className="garden-card p-4">
                       <CardContent className="p-0">
                         <div className="mb-2 flex items-center gap-2">
                           <Badge
@@ -210,7 +199,7 @@ export function AboutSection() {
                             <div className="mb-1 flex items-center gap-2">
                               <Badge
                                 variant="outline"
-                                className="text-xs bg-green-500/10 border-green-500"
+                                className="border-green-500 bg-green-500/10 text-xs"
                               >
                                 🎓 Milestone
                               </Badge>
@@ -232,7 +221,7 @@ export function AboutSection() {
                             <div className="mb-1 flex items-center gap-2">
                               <Badge
                                 variant="outline"
-                                className="text-xs bg-[hsl(var(--portfolio-accent))]/10"
+                                className="bg-[hsl(var(--portfolio-accent))]/10 text-xs"
                               >
                                 🚀 Side Project • {item.sideProject.year}
                               </Badge>
@@ -251,7 +240,7 @@ export function AboutSection() {
                             <div className="mb-1 flex items-center gap-2">
                               <Badge
                                 variant="outline"
-                                className="text-xs bg-blue-500/10 border-blue-500"
+                                className="border-blue-500 bg-blue-500/10 text-xs"
                               >
                                 📚 Education
                               </Badge>
@@ -273,15 +262,10 @@ export function AboutSection() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </FadeInLeft>
 
           {/* Skills - Simplified to one motion wrapper */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <FadeInRight>
             <h3 className="mb-8 flex items-center gap-2 text-2xl font-bold">
               <Palette className="size-6 text-[hsl(var(--portfolio-accent))]" />
               Skills & Technologies
@@ -289,7 +273,7 @@ export function AboutSection() {
             <div className="space-y-6">
               {skills.map((skillGroup) => (
                 <div key={skillGroup.category}>
-                  <Card className="glass p-4">
+                  <Card className="garden-card p-4">
                     <CardContent className="p-0">
                       <h4 className="mb-3 font-semibold text-[hsl(var(--portfolio-accent))]">
                         {skillGroup.category}
@@ -310,7 +294,7 @@ export function AboutSection() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </FadeInRight>
         </div>
       </div>
     </section>
