@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -19,11 +19,13 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        glass: "glass transition-transform hover:scale-105",
+        glass: "glass",
         "glass-primary":
-          "glass border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] transition-transform hover:scale-105",
+          "glass border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))]",
         "glass-outline":
-          "glass border-[hsl(var(--portfolio-glass-border))] transition-all hover:scale-105 hover:bg-[hsl(var(--portfolio-primary))] hover:text-white",
+          "glass border-[hsl(var(--portfolio-glass-border))] hover:bg-[hsl(var(--portfolio-primary))] hover:text-white",
+        gradient:
+          "border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] text-white shadow-none hover:from-[hsl(var(--portfolio-primary))]/90 hover:to-[hsl(var(--portfolio-accent))]/90",
       },
       size: {
         default: "h-9 px-4 py-2",
