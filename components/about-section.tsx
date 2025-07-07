@@ -7,31 +7,55 @@ import { Badge } from "@/components/ui/badge";
 
 const timeline = [
   {
-    year: "2025",
-    title: "Computer Science Graduate",
-    company: "Clemson University",
-    location: "Clemson, SC",
-    description:
-      "Bachelor of Science in Computer Science with focus on software engineering and web development.",
-    type: "education",
-  },
-  {
-    year: "2022-Present",
-    title: "Lead Software Engineer",
+    year: "May 2025-Present",
+    title: "Full Stack Developer",
     company: "Goldfinger Monitors",
     location: "Charleston, SC",
     description:
-      "Leading full-stack development of internal tools, customer platforms, and interactive marketing experiences.",
+      "Full-time role leading software development initiatives. Currently working on complete website redesign, expanding RMA portal for distributor network, and developing internal project management software.",
     type: "work",
+    milestone: {
+      title: "Graduated Computer Science",
+      company: "Clemson University",
+      description:
+        "Bachelor of Science in Computer Science with focus on software engineering and web development.",
+    },
   },
   {
-    year: "2024",
-    title: "Dare2Watch Developer",
-    company: "Freelance Project",
-    location: "Remote",
+    year: "Aug 2023-May 2025",
+    title: "Full Stack Developer",
+    company: "Goldfinger Monitors",
+    location: "Charleston, SC (Hybrid)",
     description:
-      "Built luxury e-commerce platform for watch retailer with inventory management and customer portal.",
-    type: "project",
+      "Promoted to full stack developer, built customer-facing RMA portal with QR code scanning and deep analytics, developed internal parts database for manufacturing synchronization, and created interactive marketing assets and touchscreen games.",
+    type: "work",
+    sideProject: {
+      title: "Dare2Watch E-commerce Platform",
+      year: "2024",
+      description:
+        "Built complete luxury watch e-commerce website with inventory management and Square payment integration as a side project.",
+    },
+    education: {
+      title: "Computer Science Student",
+      company: "Clemson University",
+      description:
+        "Pursuing Bachelor of Science in Computer Science while maintaining full-time development role.",
+    },
+  },
+  {
+    year: "Jun 2022-Aug 2023",
+    title: "Software Engineer",
+    company: "Goldfinger Monitors",
+    location: "Charleston, SC (Hybrid)",
+    description:
+      "Started as software engineer with hybrid schedule. Built foundational systems for internal parts database, maintained legacy POS system, and created animated marketing assets for trade shows.",
+    type: "work",
+    education: {
+      title: "Computer Science Student",
+      company: "Clemson University",
+      description:
+        "Balancing computer science studies with professional software development experience.",
+    },
   },
   {
     year: "2021",
@@ -51,11 +75,22 @@ const skills = [
   },
   {
     category: "Backend",
-    items: ["Node.js", "Supabase", "PostgreSQL", "REST APIs", "GraphQL"],
+    items: [
+      "Node.js",
+      "Supabase",
+      "PostgreSQL",
+      "REST APIs",
+      "Prisma ORM",
+      "Drizzle ORM",
+    ],
   },
   {
-    category: "Tools",
-    items: ["Git", "Docker", "Vercel", "Figma", "Unity", "C#"],
+    category: "Cloud & Infrastructure",
+    items: ["AWS RDS", "AWS EC2", "Vercel", "Docker"],
+  },
+  {
+    category: "Tools & Design",
+    items: ["Git", "Figma", "Blender", "Unity", "C#"],
   },
   {
     category: "Languages",
@@ -65,9 +100,9 @@ const skills = [
 
 const stats = [
   { label: "Years Experience", value: "3+", icon: Calendar },
-  { label: "Projects Completed", value: "25+", icon: Code },
+  { label: "Projects Completed", value: "10+", icon: Code },
   { label: "Technologies Used", value: "20+", icon: Database },
-  { label: "Happy Clients", value: "10+", icon: Award },
+  { label: "Happy Clients", value: "5+", icon: Award },
 ];
 
 export function AboutSection() {
@@ -169,6 +204,69 @@ export function AboutSection() {
                         <p className="text-sm text-muted-foreground">
                           {item.description}
                         </p>
+                        {/* Milestone information (graduation) */}
+                        {item.milestone && (
+                          <div className="mt-3 border-l-2 border-green-500 pl-3">
+                            <div className="mb-1 flex items-center gap-2">
+                              <Badge
+                                variant="outline"
+                                className="text-xs bg-green-500/10 border-green-500"
+                              >
+                                🎓 Milestone
+                              </Badge>
+                            </div>
+                            <p className="text-sm font-medium text-green-600">
+                              {item.milestone.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              <span className="font-medium">
+                                {item.milestone.company}
+                              </span>{" "}
+                              • {item.milestone.description}
+                            </p>
+                          </div>
+                        )}
+                        {/* Side project information */}
+                        {item.sideProject && (
+                          <div className="mt-3 border-l-2 border-[hsl(var(--portfolio-accent))] pl-3">
+                            <div className="mb-1 flex items-center gap-2">
+                              <Badge
+                                variant="outline"
+                                className="text-xs bg-[hsl(var(--portfolio-accent))]/10"
+                              >
+                                🚀 Side Project • {item.sideProject.year}
+                              </Badge>
+                            </div>
+                            <p className="text-sm font-medium text-[hsl(var(--portfolio-accent))]">
+                              {item.sideProject.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {item.sideProject.description}
+                            </p>
+                          </div>
+                        )}
+                        {/* Education information (concurrent schooling) */}
+                        {item.education && (
+                          <div className="mt-3 border-l-2 border-blue-500 pl-3">
+                            <div className="mb-1 flex items-center gap-2">
+                              <Badge
+                                variant="outline"
+                                className="text-xs bg-blue-500/10 border-blue-500"
+                              >
+                                📚 Education
+                              </Badge>
+                            </div>
+                            <p className="text-sm font-medium text-blue-600">
+                              {item.education.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              <span className="font-medium">
+                                {item.education.company}
+                              </span>{" "}
+                              • {item.education.description}
+                            </p>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   </div>
