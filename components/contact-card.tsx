@@ -114,9 +114,12 @@ export function ContactCard() {
           variant="default"
           size="lg"
           className="w-full border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] shadow-none hover:from-[hsl(var(--portfolio-primary))]/90 hover:to-[hsl(var(--portfolio-accent))]/90"
+          asChild
         >
-          <Download className="mr-2 size-4" />
-          Download Resume
+          <a href="/RussellWelchResume.pdf" download="RussellWelchResume.pdf">
+            <Download className="mr-2 size-4" />
+            Download Resume
+          </a>
         </Button>
       </CardContent>
     </Card>

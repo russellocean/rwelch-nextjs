@@ -212,7 +212,12 @@ export function HeroSection() {
                 className="border-[hsl(var(--portfolio-primary))]/30 hover:border-[hsl(var(--portfolio-primary))]/50 hover:bg-[hsl(var(--portfolio-primary))]/5"
                 asChild
               >
-                <a href="#resume">Download Resume</a>
+                <a
+                  href="/RussellWelchResume.pdf"
+                  download="RussellWelchResume.pdf"
+                >
+                  Download Resume
+                </a>
               </Button>
             </motion.div>
 
