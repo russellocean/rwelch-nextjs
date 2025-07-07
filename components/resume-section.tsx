@@ -63,7 +63,29 @@ const education = {
   school: "Clemson University",
   period: "August 2021 - May 2025",
   location: "Clemson, SC",
-  gpa: "3.7/4.0",
+  projects: [
+    {
+      name: "Driver Incentive Program",
+      course: "Senior Practicum",
+      description:
+        "Built comprehensive driver incentive system with team using Next.js, AWS RDS, and AWS EC2",
+      tech: ["Next.js", "AWS RDS", "AWS EC2", "REST API"],
+    },
+    {
+      name: "2D Game Engine",
+      course: "2D Game Engine Development",
+      description:
+        "Developed complete 2D game engine from scratch with custom rendering and physics",
+      tech: ["C++", "OpenGL", "Game Development"],
+    },
+    {
+      name: "Portfolio Website",
+      course: "Web Development",
+      description:
+        "Created original portfolio website demonstrating full-stack web development skills",
+      tech: ["PHP", "JavaScript", "HTML/CSS"],
+    },
+  ],
 };
 
 const certifications = [
@@ -164,23 +186,53 @@ export function ResumeSection() {
               <Card className="garden-card p-6">
                 <CardHeader className="mb-4 p-0">
                   <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
-                    Education
+                    Education & Academic Projects
                   </h3>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <div>
-                    <h4 className="mb-1 font-semibold">{education.degree}</h4>
-                    <p className="font-medium text-[hsl(var(--portfolio-primary))]">
-                      {education.school}
-                    </p>
-                    <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>{education.period}</span>
-                      <span>•</span>
-                      <span>{education.location}</span>
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="mb-1 font-semibold">{education.degree}</h4>
+                      <p className="font-medium text-[hsl(var(--portfolio-primary))]">
+                        {education.school}
+                      </p>
+                      <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>{education.period}</span>
+                        <span>•</span>
+                        <span>{education.location}</span>
+                      </div>
                     </div>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      GPA: {education.gpa}
-                    </p>
+
+                    <div className="border-t border-[hsl(var(--portfolio-glass-border))] pt-3">
+                      <h4 className="mb-2 font-semibold text-sm">
+                        Key Academic Projects
+                      </h4>
+                      <div className="space-y-2">
+                        {education.projects.map((project, index) => (
+                          <div key={index} className="space-y-1">
+                            <div className="flex items-center justify-between gap-2">
+                              <h5 className="font-medium text-sm">
+                                {project.name}
+                              </h5>
+                              <span className="text-xs text-muted-foreground shrink-0">
+                                {project.course}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                              {project.tech.map((tech, techIndex) => (
+                                <Badge
+                                  key={techIndex}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
+                                  {tech}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
