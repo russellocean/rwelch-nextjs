@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FadeInUp, FadeInGrid } from "@/components/motion-wrappers";
+import Image from "next/image";
 
 const projects = [
   {
@@ -14,7 +15,7 @@ const projects = [
       "Modern portfolio website built with Next.js 15, React 19, featuring 3D elements and glass morphism design.",
     longDescription:
       "This very portfolio you're viewing! Built with Next.js 15, React 19, and modern web technologies. Features 3D elements, smooth animations, and a glass morphism design language.",
-    image: "/api/placeholder/600/400",
+    image: "/projects/personal-portfolio.webp",
     tech: ["Next.js", "React", "Three.js", "Motion", "Tailwind CSS"],
     category: "Portfolio",
     year: "2025",
@@ -36,7 +37,7 @@ const projects = [
       "Complete website redesign for touchscreen monitor manufacturer with modern responsive design and improved UX.",
     longDescription:
       "Led the complete redesign and development of the Goldfinger Monitors website, creating a modern, responsive platform that better showcases their touchscreen monitor products and attracts potential customers across multiple industries.",
-    image: "/api/placeholder/600/400",
+    image: "/projects/goldfinger-monitors.webp",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Modern Design"],
     category: "Corporate Website",
     year: "2024-2025",
@@ -58,7 +59,7 @@ const projects = [
       "Full-stack customer portal with QR scanning, real-time analytics, and multi-location coordination for repair workflows.",
     longDescription:
       "Built a comprehensive RMA system that allows customers to initiate returns, track repair status, and communicate with support. Features real-time data analytics for actionable product insights, coordinating 9 technicians across 3 locations with QR code scanning capabilities.",
-    image: "/api/placeholder/600/400",
+    image: "/projects/rma-portal.webp",
     tech: ["Next.js", "Supabase", "TypeScript", "Tailwind CSS", "Analytics"],
     category: "Customer Portal",
     year: "2023-2025",
@@ -80,7 +81,7 @@ const projects = [
       "Luxury watch e-commerce platform with inventory management and Square payment integration for premium watch retailer.",
     longDescription:
       "Built a comprehensive e-commerce solution for a luxury watch retailer featuring real-time inventory tracking, customer account management, and integrated Square payment processing. The platform includes an admin dashboard for inventory management and customer service tools.",
-    image: "/api/placeholder/600/400",
+    image: "/projects/dare2watch.webp",
     tech: ["Next.js", "TypeScript", "Supabase", "Square", "Tailwind CSS"],
     category: "E-commerce",
     year: "2024",
@@ -102,7 +103,7 @@ const projects = [
       "Unity-based interactive games for touchscreen displays at trade shows, showcasing product capabilities through engaging gameplay.",
     longDescription:
       "Created three engaging interactive experiences for trade shows using Unity and C#: a roulette wheel game, a catch-them-all collection game with cart mechanics, and a fake slot machine demo. These games demonstrate the capabilities of Goldfinger's touchscreen monitors while entertaining visitors.",
-    image: "/api/placeholder/600/400",
+    image: "/projects/trade-show-games.webp",
     tech: ["Unity", "C#", "TouchScript", "Game Design"],
     category: "Interactive Media",
     year: "2023",
@@ -124,7 +125,7 @@ const projects = [
       "Internal parts database system for touchscreen monitor manufacturing with vendor price tracking and international facility coordination.",
     longDescription:
       "Developed a comprehensive parts management system for Goldfinger Monitors, featuring over 1700+ unique part numbers with vendor price tracking. The system coordinates between engineering facilities in the US and manufacturing in Vietnam across multiple departments.",
-    image: "/api/placeholder/600/400",
+    image: "/projects/goldfinger-manage.webp",
     tech: [
       "React",
       "Node.js",
@@ -150,7 +151,7 @@ const projects = [
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="relative overflow-hidden py-20">
+    <section id="projects" className="relative overflow-hidden">
       {/* Simplified background - remove animate-float for better performance */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/3 top-1/4 size-96 rounded-full bg-[hsl(var(--portfolio-primary))] opacity-10 mix-blend-multiply blur-xl" />
@@ -200,11 +201,14 @@ export function ProjectsSection() {
                 <Card className="garden-card transform-gpu overflow-hidden transition-all duration-700 ease-out focus-within:shadow-2xl focus-within:ring-2 focus-within:ring-[hsl(var(--portfolio-primary))] focus-within:ring-offset-2 hover:shadow-2xl">
                   {/* Project Image */}
                   <div className="relative overflow-hidden">
-                    <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))]">
-                      <div className="text-lg font-semibold text-white">
-                        {project.title}
-                      </div>
-                    </div>
+                    <Image
+                      src={project.image}
+                      alt={`Screenshot of ${project.title}`}
+                      width={600}
+                      height={400}
+                      className="aspect-video w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      priority={project.id <= 3}
+                    />
                     <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/40 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
                       {project.links.live !== "#" && (
                         <Button
