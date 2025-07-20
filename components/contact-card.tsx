@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   Mail,
-  Phone,
   MapPin,
   Linkedin,
   Github,
@@ -16,7 +15,6 @@ import { Button } from "@/components/ui/button";
 
 const contactInfo = {
   email: "russellwelch17@gmail.com",
-  phone: "(843) 754-2302",
   location: "Charleston, SC",
   website: "russellwelch.dev",
   linkedin: "linkedin.com/in/russelldoescode",
@@ -59,12 +57,6 @@ export function ContactCard() {
               <Copy className="size-4" />
             )}
           </Button>
-        </div>
-
-        {/* Phone */}
-        <div className="flex items-center gap-3 rounded-lg border border-[hsl(var(--portfolio-primary))]/10 bg-background/60 p-3 transition-all hover:border-[hsl(var(--portfolio-primary))]/30 hover:bg-background/80">
-          <Phone className="size-5 text-[hsl(var(--portfolio-primary))]" />
-          <div className="font-medium">{contactInfo.phone}</div>
         </div>
 
         {/* Location */}
