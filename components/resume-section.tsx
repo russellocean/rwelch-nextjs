@@ -1,11 +1,19 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+"use client";
+
+import { FadeInUp } from "@/components/motion-wrappers";
+import { motion } from "motion/react";
 import {
-  FadeInUp,
-  FadeInLeft,
-  FadeInRight,
-} from "@/components/motion-wrappers";
-import { ContactCard } from "@/components/contact-card";
+  Mail,
+  MapPin,
+  Linkedin,
+  Github,
+  Download,
+  Copy,
+  Check,
+  GraduationCap,
+  Award,
+} from "lucide-react";
+import { useState } from "react";
 
 const experience = [
   {
@@ -13,6 +21,7 @@ const experience = [
     company: "Goldfinger Monitors",
     period: "May 2025 - Present",
     location: "Charleston, SC",
+    current: true,
     achievements: [
       "Lead software development initiatives in full-time office role, managing website redesign and internal tool development",
       "Expand RMA portal functionality for distributor network with real-time analytics and multi-location coordination",
@@ -67,22 +76,16 @@ const education = {
     {
       name: "Driver Incentive Program",
       course: "Senior Practicum",
-      description:
-        "Built comprehensive driver incentive system with team using Next.js, AWS RDS, and AWS EC2",
       tech: ["Next.js", "AWS RDS", "AWS EC2", "REST API"],
     },
     {
       name: "2D Game Engine",
       course: "2D Game Engine Development",
-      description:
-        "Developed complete 2D game engine from scratch with custom rendering and physics",
       tech: ["C++", "OpenGL", "Game Development"],
     },
     {
       name: "Portfolio Website",
       course: "Web Development",
-      description:
-        "Created original portfolio website demonstrating full-stack web development skills",
       tech: ["PHP", "JavaScript", "HTML/CSS"],
     },
   ],
@@ -93,187 +96,213 @@ const certifications = [
     name: "PC Pro Certification",
     issuer: "TestOut",
     date: "June 2021",
-    description: "Proficiency in computer hardware and OS maintenance",
   },
 ];
 
 const awards = [
-  "CTE Department Coding Award - James Island Charter High School (2021)",
-  "CTE Completer - James Island Charter High School (2021)",
+  "CTE Department Coding Award (2021)",
+  "CTE Completer (2021)",
 ];
 
-export function ResumeSection() {
-  return (
-    <section id="resume" className="relative overflow-hidden py-20">
-      {/* Simplified background - remove animate-float for better performance */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute bottom-1/4 right-1/3 size-80 rounded-full bg-[hsl(var(--portfolio-accent))] opacity-10 mix-blend-multiply blur-xl" />
-      </div>
+const contactInfo = {
+  email: "russellwelch17@gmail.com",
+  location: "Charleston, SC",
+  linkedin: "linkedin.com/in/russelldoescode",
+  github: "github.com/russellocean",
+};
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header - keep simple fade in */}
-        <FadeInUp className="mb-16 text-center">
-          <h2 className="gradient-text mb-4 text-4xl font-bold sm:text-5xl">
-            Resume & Contact
-          </h2>
-          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
-            Get in touch or download my resume to learn more about my experience
-            and skills.
+export function ResumeSection() {
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  const copyEmail = async () => {
+    await navigator.clipboard.writeText(contactInfo.email);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
+  return (
+    <section id="resume" className="relative py-32">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <FadeInUp className="mb-16">
+          <p className="mb-3 text-sm uppercase tracking-widest text-muted-foreground">
+            Resume
           </p>
+          <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            Experience & Contact
+          </h2>
         </FadeInUp>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Contact Card - simplified animation */}
-          <FadeInLeft className="lg:col-span-1">
-            <ContactCard />
-          </FadeInLeft>
+        <div className="grid gap-12 lg:grid-cols-3">
+          {/* Left Column - Contact & Education */}
+          <FadeInUp className="space-y-6 lg:col-span-1">
+            {/* Contact Card */}
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h3 className="mb-4 text-lg font-semibold">Get In Touch</h3>
 
-          {/* Resume Content - simplified animation */}
-          <FadeInRight className="space-y-8 lg:col-span-2">
-            {/* Experience */}
-            <Card className="garden-card p-6">
-              <CardHeader className="mb-6 p-0">
-                <h3 className="text-2xl font-bold text-[hsl(var(--portfolio-primary))]">
-                  Professional Experience
-                </h3>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="relative">
-                  <div className="space-y-6">
-                    {experience.map((job, index) => (
-                      <div key={index} className="relative pl-8">
-                        {/* Timeline line segment - only show if not the last item */}
-                        {index < experience.length - 1 && (
-                          <div className="absolute left-[7px] top-4 h-[calc(100%+1.5rem)] w-0.5 bg-[hsl(var(--portfolio-primary))]" />
-                        )}
-                        {/* Timeline dot - aligned with job title */}
-                        <div className="absolute left-0 top-0 size-4 rounded-full border-2 border-background bg-[hsl(var(--portfolio-primary))]" />
-                        <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                          <h4 className="text-lg font-semibold">{job.title}</h4>
-                          <Badge variant="outline">{job.period}</Badge>
-                        </div>
-                        <div className="mb-3 flex items-center gap-2">
-                          <span className="font-medium text-[hsl(var(--portfolio-accent))]">
-                            {job.company}
-                          </span>
-                          <span className="text-sm text-muted-foreground">
-                            • {job.location}
-                          </span>
-                        </div>
-                        <ul className="space-y-2">
-                          {job.achievements.map(
-                            (achievement, achievementIndex) => (
-                              <li
-                                key={achievementIndex}
-                                className="flex items-start gap-2 text-sm text-muted-foreground"
-                              >
-                                <span className="mt-2 size-2 shrink-0 rounded-full bg-[hsl(var(--portfolio-accent))]" />
-                                {achievement}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Email */}
+              <button
+                onClick={copyEmail}
+                className="mb-3 flex w-full items-center gap-3 rounded-xl border border-border bg-background p-3 text-left transition-colors hover:bg-muted/50"
+              >
+                <Mail className="size-4 text-muted-foreground" />
+                <span className="flex-1 truncate text-sm">{contactInfo.email}</span>
+                {copiedEmail ? (
+                  <Check className="size-4 text-green-500" />
+                ) : (
+                  <Copy className="size-4 text-muted-foreground" />
+                )}
+              </button>
 
-            {/* Education & Certifications */}
-            <div className="grid gap-6 md:grid-cols-2">
-              {/* Education */}
-              <Card className="garden-card p-6">
-                <CardHeader className="mb-4 p-0">
-                  <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
-                    Education & Academic Projects
-                  </h3>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="mb-1 font-semibold">{education.degree}</h4>
-                      <p className="font-medium text-[hsl(var(--portfolio-primary))]">
-                        {education.school}
-                      </p>
-                      <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
-                        <span>{education.period}</span>
-                        <span>•</span>
-                        <span>{education.location}</span>
-                      </div>
-                    </div>
+              {/* Location */}
+              <div className="mb-4 flex items-center gap-3 rounded-xl border border-border bg-background p-3">
+                <MapPin className="size-4 text-muted-foreground" />
+                <span className="text-sm">{contactInfo.location}</span>
+              </div>
 
-                    <div className="border-t border-[hsl(var(--portfolio-glass-border))] pt-3">
-                      <h4 className="mb-2 font-semibold text-sm">
-                        Key Academic Projects
-                      </h4>
-                      <div className="space-y-2">
-                        {education.projects.map((project, index) => (
-                          <div key={index} className="space-y-1">
-                            <div className="flex items-center justify-between gap-2">
-                              <h5 className="font-medium text-sm">
-                                {project.name}
-                              </h5>
-                              <span className="text-xs text-muted-foreground shrink-0">
-                                {project.course}
-                              </span>
-                            </div>
-                            <div className="flex flex-wrap gap-1">
-                              {project.tech.map((tech, techIndex) => (
-                                <Badge
-                                  key={techIndex}
-                                  variant="secondary"
-                                  className="text-xs"
-                                >
-                                  {tech}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Social Links */}
+              <div className="grid grid-cols-2 gap-2">
+                <a
+                  href={`https://${contactInfo.linkedin}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-border py-2.5 text-sm transition-colors hover:bg-muted/50"
+                >
+                  <Linkedin className="size-4" />
+                  LinkedIn
+                </a>
+                <a
+                  href={`https://${contactInfo.github}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-border py-2.5 text-sm transition-colors hover:bg-muted/50"
+                >
+                  <Github className="size-4" />
+                  GitHub
+                </a>
+              </div>
 
-              {/* Certifications & Awards */}
-              <Card className="garden-card p-6">
-                <CardHeader className="mb-4 p-0">
-                  <h3 className="text-xl font-bold text-[hsl(var(--portfolio-accent))]">
-                    Certifications & Awards
-                  </h3>
-                </CardHeader>
-                <CardContent className="space-y-4 p-0">
-                  {certifications.map((cert, index) => (
-                    <div key={index}>
-                      <h4 className="font-semibold">{cert.name}</h4>
-                      <p className="text-sm text-[hsl(var(--portfolio-primary))]">
-                        {cert.issuer} • {cert.date}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {cert.description}
-                      </p>
+              {/* Download Resume */}
+              <a
+                href="/RussellWelchResume.pdf"
+                download="RussellWelchResume.pdf"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-foreground py-3 text-sm font-medium text-background transition-opacity hover:opacity-90"
+              >
+                <Download className="size-4" />
+                Download Resume
+              </a>
+            </div>
+
+            {/* Education Card */}
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <GraduationCap className="size-5" />
+                <h3 className="text-lg font-semibold">Education</h3>
+              </div>
+
+              <div className="mb-4">
+                <p className="font-medium">{education.degree}</p>
+                <p className="text-sm text-muted-foreground">{education.school}</p>
+                <p className="text-sm text-muted-foreground">{education.period}</p>
+              </div>
+
+              <div className="border-t border-border pt-4">
+                <p className="mb-2 text-sm font-medium">Key Projects</p>
+                <div className="space-y-2">
+                  {education.projects.map((project, index) => (
+                    <div key={index} className="text-sm">
+                      <p className="font-medium">{project.name}</p>
+                      <p className="text-xs text-muted-foreground">{project.course}</p>
                     </div>
                   ))}
-
-                  <div className="border-t border-[hsl(var(--portfolio-glass-border))] pt-4">
-                    <h4 className="mb-2 font-semibold">Awards</h4>
-                    <ul className="space-y-1">
-                      {awards.map((award, index) => (
-                        <li
-                          key={index}
-                          className="text-sm text-muted-foreground"
-                        >
-                          • {award}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
-          </FadeInRight>
+
+            {/* Certifications & Awards Card */}
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <Award className="size-5" />
+                <h3 className="text-lg font-semibold">Recognition</h3>
+              </div>
+
+              {certifications.map((cert, index) => (
+                <div key={index} className="mb-3">
+                  <p className="font-medium">{cert.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {cert.issuer} · {cert.date}
+                  </p>
+                </div>
+              ))}
+
+              <div className="border-t border-border pt-3">
+                <p className="mb-2 text-sm font-medium">Awards</p>
+                {awards.map((award, index) => (
+                  <p key={index} className="text-sm text-muted-foreground">
+                    {award}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </FadeInUp>
+
+          {/* Right Column - Experience */}
+          <FadeInUp className="lg:col-span-2">
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <h3 className="mb-6 text-lg font-semibold">Professional Experience</h3>
+
+              <div className="space-y-8">
+                {experience.map((job, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="relative pl-6"
+                  >
+                    {/* Timeline line */}
+                    {index < experience.length - 1 && (
+                      <div className="absolute left-[5px] top-3 h-full w-px bg-border" />
+                    )}
+                    {/* Timeline dot */}
+                    <div
+                      className={`absolute left-0 top-1.5 size-3 rounded-full border-2 border-background ${
+                        job.current ? "bg-foreground" : "bg-muted-foreground/40"
+                      }`}
+                    />
+
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <h4 className="font-medium">{job.title}</h4>
+                        {job.current && (
+                          <span className="rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-medium">
+                            Current
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {job.company} · {job.location}
+                      </p>
+                      <p className="text-sm text-muted-foreground/60">{job.period}</p>
+
+                      <ul className="mt-3 space-y-2">
+                        {job.achievements.map((achievement, achIndex) => (
+                          <li
+                            key={achIndex}
+                            className="flex items-start gap-2 text-sm text-muted-foreground"
+                          >
+                            <span className="mt-2 size-1 shrink-0 rounded-full bg-muted-foreground/40" />
+                            {achievement}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </FadeInUp>
         </div>
       </div>
     </section>

@@ -2,8 +2,7 @@
 
 import { useState, useEffect, Suspense, lazy } from "react";
 import { motion } from "motion/react";
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowDown, Github, Linkedin, Mail, FileText } from "lucide-react";
 
 // Lazy load the morphing geometry for better performance
 const MorphingGeometry = lazy(() => import("./morphing-geometry"));
@@ -30,18 +29,15 @@ const socialLinks = [
 const shouldDisable3D = () => {
   if (typeof window === "undefined") return false;
 
-  // Check for very low-end devices that might struggle with WebGL
   const canvas = document.createElement("canvas");
   const gl =
     canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 
-  if (!gl) return true; // No WebGL support
+  if (!gl) return true;
 
-  // Type guard to ensure we have a WebGL context
   const webglContext = gl as WebGLRenderingContext;
   const renderer = webglContext.getParameter(webglContext.RENDERER) as string;
 
-  // Disable on software rendering or very low-end GPUs
   if (
     renderer &&
     (renderer.includes("SwiftShader") ||
@@ -51,21 +47,19 @@ const shouldDisable3D = () => {
     return true;
   }
 
-  // Check memory constraints
   const memoryInfo = webglContext.getExtension("WEBGL_debug_renderer_info");
   if (memoryInfo) {
     const unmaskedRenderer = webglContext.getParameter(
       memoryInfo.UNMASKED_RENDERER_WEBGL
     ) as string;
     if (unmaskedRenderer && unmaskedRenderer.includes("Intel HD")) {
-      return true; // Disable on older Intel integrated graphics
+      return true;
     }
   }
 
   return false;
 };
 
-// Simple CSS-based background fallback - uses theme-aware colors
 function SimpleFallback() {
   return (
     <div className="absolute inset-0 -z-10 size-full">
@@ -89,7 +83,6 @@ export function HeroSection() {
 
   useEffect(() => {
     setMounted(true);
-    // Check if we should disable 3D after mount
     const shouldDisable = shouldDisable3D();
     setDisable3D(shouldDisable);
   }, []);
@@ -102,10 +95,6 @@ export function HeroSection() {
           <div className="text-center">
             <div className="mx-auto mb-6 h-16 w-64 animate-pulse rounded-lg bg-muted/20" />
             <div className="mx-auto mb-8 h-6 w-96 animate-pulse rounded bg-muted/20" />
-            <div className="flex justify-center gap-4">
-              <div className="h-10 w-32 animate-pulse rounded bg-muted/20" />
-              <div className="h-10 w-32 animate-pulse rounded bg-muted/20" />
-            </div>
           </div>
         </div>
       </section>
@@ -115,7 +104,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center justify-center pb-20"
+      className="relative flex min-h-screen items-center justify-center"
     >
       {/* Morphing Geometry Background */}
       {disable3D ? (
@@ -126,132 +115,124 @@ export function HeroSection() {
         </Suspense>
       )}
 
-
-      <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 lg:px-8">
-        <div className="relative z-10 grid items-center gap-12 lg:grid-cols-2">
+      <div className="mx-auto max-w-6xl px-4 pt-20 sm:px-6 lg:px-8">
+        <div className="relative z-10 grid items-center gap-16 lg:grid-cols-2">
           {/* Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative space-y-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="space-y-8"
           >
-
-            {/* Greeting */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-2"
-            >
-              <p className="text-lg text-muted-foreground">
+            {/* Greeting & Name */}
+            <div className="space-y-4">
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-muted-foreground"
+              >
                 Hey there, I&apos;m
-              </p>
-              <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-                <span className="gradient-text">Russell Welch</span>
-              </h1>
-            </motion.div>
+              </motion.p>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
+              >
+                Russell Welch
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="text-xl text-muted-foreground sm:text-2xl"
+              >
+                Full-Stack Developer
+              </motion.p>
+            </div>
 
-            {/* Tagline */}
+            {/* Bio - more concise */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-xl font-medium text-muted-foreground sm:text-2xl"
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="max-w-lg text-pretty leading-relaxed text-muted-foreground"
             >
-              Building playful interfaces that power serious results.
+              I build thoughtful digital products at the intersection of design
+              and engineering. Currently shipping inventory platforms,
+              manufacturing tools, and interactive experiences at Goldfinger
+              Monitors.
             </motion.p>
 
-            {/* Bio */}
+            {/* CTA Buttons - refined pill style */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="space-y-4 leading-relaxed text-muted-foreground"
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="flex flex-wrap items-center gap-3"
             >
-              <p>
-                I&apos;m a full-stack developer who believes software can be
-                both powerful and fun. At Clemson University I&apos;ve sharpened
-                my CS foundations while leading real-world projects at
-                Goldfinger Monitors—shipping inventory platforms, manufacturing
-                dashboards, and interactive trade-show games that run on our
-                touchscreen displays.
-              </p>
-              <p>
-                Whether crafting a luxury e-commerce experience for Dare2Watch
-                or streamlining internal logistics, I thrive at the intersection
-                of design and engineering, turning complex workflows into
-                delightful, efficient tools.
-              </p>
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.0 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Button variant="gradient" size="lg" asChild>
-                <a href="#projects">View My Work</a>
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-[hsl(var(--portfolio-primary))]/30 hover:border-[hsl(var(--portfolio-primary))]/50 hover:bg-[hsl(var(--portfolio-primary))]/5"
-                asChild
+              <a
+                href="#projects"
+                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-all hover:opacity-90"
               >
-                <a
-                  href="/RussellWelchResume.pdf"
-                  download="RussellWelchResume.pdf"
-                >
-                  Download Resume
-                </a>
-              </Button>
+                View My Work
+                <ArrowDown className="size-4 transition-transform group-hover:translate-y-0.5" />
+              </a>
+              <a
+                href="/RussellWelchResume.pdf"
+                download="RussellWelchResume.pdf"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-background/50 px-6 py-3 text-sm font-medium transition-all hover:bg-muted/50"
+              >
+                <FileText className="size-4" />
+                Resume
+              </a>
             </motion.div>
 
-            {/* Social Links */}
+            {/* Social Links - minimal inline style */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
-              className="flex gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="flex items-center gap-1"
             >
-              {socialLinks.map((link) => (
+              {socialLinks.map((link, index) => (
                 <motion.a
                   key={link.name}
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
+                  className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
                   whileTap={{ scale: 0.95 }}
-                  className="group rounded-full border border-[hsl(var(--portfolio-primary))]/20 bg-background/60 p-3 transition-all hover:border-[hsl(var(--portfolio-primary))]/40 hover:bg-[hsl(var(--portfolio-primary))]/10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 + index * 0.05 }}
                 >
-                  <link.icon className="size-5" />
+                  <link.icon className="size-[18px]" />
                   <span className="sr-only">{link.name}</span>
                 </motion.a>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Empty space for layout balance */}
+          {/* Empty space for 3D background balance */}
           <div className="hidden lg:block" />
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - more subtle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.4 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          transition={{ duration: 0.5, delay: 1 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2"
         >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center gap-2 text-muted-foreground"
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center gap-2 text-muted-foreground/60"
           >
-            <span className="text-sm">Scroll to explore</span>
-            <ArrowDown className="size-4" />
+            <span className="text-xs uppercase tracking-widest">Scroll</span>
+            <div className="h-8 w-px bg-gradient-to-b from-muted-foreground/40 to-transparent" />
           </motion.div>
         </motion.div>
       </div>
