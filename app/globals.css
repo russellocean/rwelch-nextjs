@@ -4,152 +4,160 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Light Mode - "Arctic Precision" (Blue) */
+    --background: 210 40% 98%;
 
-    --foreground: 0 0% 3.9%;
+    --foreground: 217 33% 17%;
 
-    --card: 0 0% 100%;
+    --card: 210 40% 100%;
 
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 217 33% 17%;
 
-    --popover: 0 0% 100%;
+    --popover: 210 40% 100%;
 
-    --popover-foreground: 0 0% 3.9%;
+    --popover-foreground: 217 33% 17%;
 
-    --primary: 0 0% 9%;
+    --primary: 217 91% 60%;
 
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96.1%;
+    --secondary: 214 32% 91%;
 
-    --secondary-foreground: 0 0% 9%;
+    --secondary-foreground: 217 33% 17%;
 
-    --muted: 0 0% 96.1%;
+    --muted: 214 32% 91%;
 
-    --muted-foreground: 0 0% 45.1%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 0 0% 96.1%;
+    --accent: 192 91% 36%;
 
-    --accent-foreground: 0 0% 9%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
 
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%;
+    --border: 214 32% 85%;
 
-    --input: 0 0% 89.8%;
+    --input: 214 32% 85%;
 
-    --ring: 0 0% 3.9%;
+    --ring: 217 91% 60%;
 
-    --chart-1: 12 76% 61%;
+    --chart-1: 217 91% 60%;
 
-    --chart-2: 173 58% 39%;
+    --chart-2: 192 91% 36%;
 
-    --chart-3: 197 37% 24%;
+    --chart-3: 199 89% 48%;
 
-    --chart-4: 43 74% 66%;
+    --chart-4: 215 20% 65%;
 
-    --chart-5: 27 87% 67%;
+    --chart-5: 192 76% 42%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 210 40% 98%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-foreground: 217 33% 17%;
 
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Portfolio Custom Variables */
-    --portfolio-primary: 258 100% 68%; /* #7B5CFF electric violet */
-    --portfolio-accent: 314 100% 69%; /* #FF5EDB pink magenta */
-    --portfolio-glass: 255 255 255 / 0.25;
-    --portfolio-glass-border: 255 255 255 / 0.18;
-    --portfolio-gradient-start: 258 100% 68%;
-    --portfolio-gradient-end: 314 100% 69%;
-  }
-  .dark {
-    --background: 0 0% 3.9%;
-
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 3.9%;
-
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 3.9%;
-
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-
-    --primary-foreground: 0 0% 9%;
-
-    --secondary: 0 0% 14.9%;
-
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 14.9%;
-
-    --muted-foreground: 0 0% 63.9%;
-
-    --accent: 0 0% 14.9%;
-
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 14.9%;
-
-    --input: 0 0% 14.9%;
-
-    --ring: 0 0% 83.1%;
-
-    --chart-1: 220 70% 50%;
-
-    --chart-2: 160 60% 45%;
-
-    --chart-3: 30 80% 55%;
-
-    --chart-4: 280 65% 60%;
-
-    --chart-5: 340 75% 55%;
-
-    --sidebar-background: 240 5.9% 10%;
-
-    --sidebar-foreground: 240 4.8% 95.9%;
-
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary: 217 91% 60%;
 
     --sidebar-primary-foreground: 0 0% 100%;
 
-    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent: 214 32% 91%;
 
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 217 33% 17%;
 
-    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-border: 214 32% 85%;
 
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 217 91% 60%;
 
-    /* Portfolio Custom Variables - Dark Mode */
-    --portfolio-primary: 258 100% 75%; /* Slightly brighter in dark mode */
-    --portfolio-accent: 314 100% 75%;
-    --portfolio-glass: 0 0 0 / 0.25;
-    --portfolio-glass-border: 255 255 255 / 0.08;
-    --portfolio-gradient-start: 258 100% 75%;
-    --portfolio-gradient-end: 314 100% 75%;
+    /* Portfolio Custom Variables - Light Mode */
+    --portfolio-primary: 217 91% 60%; /* #3B82F6 - Vibrant blue */
+    --portfolio-accent: 192 91% 36%; /* #0891B2 - Deep cyan */
+    --portfolio-highlight: 199 89% 48%; /* #0EA5E9 - Sky blue */
+    --portfolio-glass: 255 255 255 / 0.6;
+    --portfolio-glass-border: 217 91% 60% / 0.2;
+    --portfolio-gradient-start: 217 91% 60%;
+    --portfolio-gradient-end: 192 91% 36%;
+  }
+  .dark {
+    /* Dark Mode - "Midnight Ember" - Editorial, high-contrast, dramatic */
+    /* Rich warm black base with cream/terracotta accents */
+    --background: 20 14% 4%;
+
+    --foreground: 40 6% 90%;
+
+    --card: 20 10% 7%;
+
+    --card-foreground: 40 6% 90%;
+
+    --popover: 20 10% 7%;
+
+    --popover-foreground: 40 6% 90%;
+
+    /* Primary is warm cream/off-white for emphasis */
+    --primary: 36 33% 94%;
+
+    --primary-foreground: 20 14% 4%;
+
+    --secondary: 20 6% 12%;
+
+    --secondary-foreground: 40 6% 90%;
+
+    --muted: 20 6% 15%;
+
+    --muted-foreground: 25 5% 55%;
+
+    /* Accent is burnt orange/terracotta - used sparingly */
+    --accent: 24 95% 53%;
+
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 20 6% 15%;
+
+    --input: 20 6% 15%;
+
+    --ring: 24 95% 53%;
+
+    --chart-1: 24 95% 53%;
+
+    --chart-2: 36 33% 75%;
+
+    --chart-3: 16 80% 45%;
+
+    --chart-4: 30 70% 40%;
+
+    --chart-5: 20 60% 35%;
+
+    --sidebar-background: 20 14% 4%;
+
+    --sidebar-foreground: 40 6% 90%;
+
+    --sidebar-primary: 24 95% 53%;
+
+    --sidebar-primary-foreground: 0 0% 100%;
+
+    --sidebar-accent: 20 6% 12%;
+
+    --sidebar-accent-foreground: 40 6% 90%;
+
+    --sidebar-border: 20 6% 15%;
+
+    --sidebar-ring: 24 95% 53%;
+
+    /* Portfolio Custom Variables - Dark Mode "Midnight Ember" */
+    /* Primary: warm cream for text emphasis, Accent: terracotta for highlights */
+    --portfolio-primary: 24 95% 53%; /* #F97316 - Burnt orange/terracotta */
+    --portfolio-accent: 36 33% 85%; /* Warm cream for secondary highlights */
+    --portfolio-highlight: 16 90% 50%; /* Deep burnt orange for hover states */
+    --portfolio-glass: 20 14% 4% / 0.7;
+    --portfolio-glass-border: 24 95% 53% / 0.12;
+    --portfolio-gradient-start: 24 95% 53%;
+    --portfolio-gradient-end: 16 85% 45%;
   }
 }
 
@@ -159,61 +167,145 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-attachment: fixed;
+  }
+
+  /* Light mode: Soft blue ambient glow */
+  :root body {
     background-image: radial-gradient(
-        circle at 20% 80%,
-        hsl(var(--portfolio-primary) / 0.1) 0%,
+        ellipse 80% 50% at 20% 80%,
+        hsl(var(--portfolio-primary) / 0.08) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 85% 15%,
+        hsl(var(--portfolio-accent) / 0.06) 0%,
+        transparent 50%
+      );
+  }
+
+  /* Dark mode: Subtle warm grain texture effect with minimal glow */
+  .dark body {
+    background-image: radial-gradient(
+        ellipse 100% 80% at 50% 100%,
+        hsl(var(--portfolio-primary) / 0.04) 0%,
         transparent 50%
       ),
       radial-gradient(
-        circle at 80% 20%,
-        hsl(var(--portfolio-accent) / 0.1) 0%,
-        transparent 50%
+        ellipse 50% 50% at 90% 10%,
+        hsl(24 30% 20% / 0.15) 0%,
+        transparent 40%
       );
-    background-attachment: fixed;
   }
 }
 
 @layer utilities {
   .glass {
-    background: rgba(var(--portfolio-glass));
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(var(--portfolio-glass-border));
-  }
-
-  .glass-soft {
-    background: hsl(var(--background) / 0.8);
-    backdrop-filter: blur(6px);
-    border: 1px solid hsl(var(--portfolio-primary) / 0.1);
+    backdrop-filter: blur(12px);
     transition: all 0.3s ease;
   }
 
-  .glass-soft:hover {
+  /* Light mode glass: frosted white with blue tint */
+  :root .glass {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid hsl(var(--portfolio-primary) / 0.15);
+  }
+
+  /* Dark mode glass: subtle, editorial, warm black */
+  .dark .glass {
+    background: hsl(20 10% 7% / 0.85);
+    border: 1px solid hsl(var(--border));
+  }
+
+  .glass-soft {
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+  }
+
+  :root .glass-soft {
+    background: hsl(var(--background) / 0.8);
+    border: 1px solid hsl(var(--portfolio-primary) / 0.1);
+  }
+
+  :root .glass-soft:hover {
     background: hsl(var(--background) / 0.9);
     border: 1px solid hsl(var(--portfolio-primary) / 0.2);
   }
 
+  .dark .glass-soft {
+    background: hsl(var(--card) / 0.9);
+    border: 1px solid hsl(var(--border));
+  }
+
+  .dark .glass-soft:hover {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--portfolio-primary) / 0.3);
+  }
+
   .garden-card {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--background) / 0.95),
-      hsl(var(--background) / 0.85)
-    );
-    backdrop-filter: blur(6px);
-    border: 2px solid hsl(var(--portfolio-primary) / 0.15);
-    border-radius: 1rem;
+    position: relative;
+    background: hsl(var(--card));
+    backdrop-filter: blur(8px);
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.75rem;
     transition: all 0.3s ease;
   }
 
-  .garden-card:hover {
-    border-color: hsl(var(--portfolio-primary) / 0.3);
-    transform: translateY(-2px);
+  /* Light mode: gradient border effect */
+  :root .garden-card {
+    border: 2px solid transparent;
+    background-image: linear-gradient(hsl(var(--card)), hsl(var(--card))),
+      linear-gradient(
+        135deg,
+        hsl(var(--portfolio-primary) / 0.3),
+        hsl(var(--portfolio-accent) / 0.3)
+      );
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
   }
 
-  .gradient-text {
+  :root .garden-card:hover {
+    background-image: linear-gradient(hsl(var(--card)), hsl(var(--card))),
+      linear-gradient(
+        135deg,
+        hsl(var(--portfolio-primary) / 0.6),
+        hsl(var(--portfolio-accent) / 0.6)
+      );
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px hsl(var(--portfolio-primary) / 0.12);
+  }
+
+  /* Dark mode: subtle, editorial, refined border */
+  .dark .garden-card {
+    border: 1px solid hsl(var(--border));
+    background-image: none;
+    background-clip: border-box;
+  }
+
+  .dark .garden-card:hover {
+    border-color: hsl(var(--portfolio-primary) / 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px hsl(0 0% 0% / 0.3);
+  }
+
+  /* Light mode: blue to cyan gradient */
+  :root .gradient-text {
     background: linear-gradient(
       135deg,
       hsl(var(--portfolio-primary)),
       hsl(var(--portfolio-accent))
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Dark mode: warm cream to terracotta - more editorial */
+  .dark .gradient-text {
+    background: linear-gradient(
+      135deg,
+      hsl(36 33% 90%),
+      hsl(var(--portfolio-primary))
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

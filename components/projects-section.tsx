@@ -247,7 +247,7 @@ export function ProjectsSection() {
                         </Button>
                       )}
                     </div>
-                    <Badge className="absolute right-3 top-3 border-0 bg-[hsl(var(--portfolio-accent))] text-white">
+                    <Badge className="absolute right-3 top-3 border-0 bg-[hsl(var(--portfolio-primary))] text-white">
                       {project.status}
                     </Badge>
                   </div>

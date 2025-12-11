@@ -103,9 +103,9 @@ export function ContactCard() {
 
         {/* Download Resume */}
         <Button
-          variant="default"
+          variant="gradient"
           size="lg"
-          className="w-full border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] shadow-none hover:from-[hsl(var(--portfolio-primary))]/90 hover:to-[hsl(var(--portfolio-accent))]/90"
+          className="w-full"
           asChild
         >
           <a href="/RussellWelchResume.pdf" download="RussellWelchResume.pdf">

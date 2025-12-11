@@ -236,16 +236,16 @@ export function AboutSection() {
                         )}
                         {/* Education information (concurrent schooling) */}
                         {item.education && (
-                          <div className="mt-3 border-l-2 border-blue-500 pl-3">
+                          <div className="mt-3 border-l-2 border-[hsl(var(--portfolio-primary))] pl-3">
                             <div className="mb-1 flex items-center gap-2">
                               <Badge
                                 variant="outline"
-                                className="border-blue-500 bg-blue-500/10 text-xs"
+                                className="border-[hsl(var(--portfolio-primary))] bg-[hsl(var(--portfolio-primary))]/10 text-xs"
                               >
                                 📚 Education
                               </Badge>
                             </div>
-                            <p className="text-sm font-medium text-blue-600">
+                            <p className="text-sm font-medium text-[hsl(var(--portfolio-primary))]">
                               {item.education.title}
                             </p>
                             <p className="text-xs text-muted-foreground">

@@ -25,7 +25,7 @@ const buttonVariants = cva(
         "glass-outline":
           "glass border-[hsl(var(--portfolio-glass-border))] hover:bg-[hsl(var(--portfolio-primary))] hover:text-white",
         gradient:
-          "border-0 bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] text-white shadow-none hover:from-[hsl(var(--portfolio-primary))]/90 hover:to-[hsl(var(--portfolio-accent))]/90",
+          "border-0 bg-gradient-to-r from-[hsl(var(--portfolio-gradient-start))] to-[hsl(var(--portfolio-gradient-end))] text-white shadow-md hover:shadow-lg hover:brightness-110 transition-all",
       },
       size: {
         default: "h-9 px-4 py-2",
