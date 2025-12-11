@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "motion/react";
 
 const navItems = [
-  { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
   { name: "Projects", href: "#projects" },
   { name: "Resume", href: "#resume" },
@@ -16,6 +15,7 @@ const navItems = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -23,6 +23,20 @@ export function Navigation() {
     setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+
+      // Track active section
+      const sections = ["about", "projects", "resume"];
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+      if (window.scrollY < 100) setActiveSection("");
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -33,135 +47,174 @@ export function Navigation() {
 
   return (
     <motion.nav
-      initial={{ y: -50 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "py-2" : "py-4"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        isScrolled ? "py-3" : "py-5"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div
-          className={`glass rounded-2xl px-6 py-3 transition-all duration-300 ${
-            isScrolled ? "backdrop-blur-xl" : ""
+          className={`flex items-center justify-between rounded-full px-2 py-2 transition-all duration-500 ${
+            isScrolled
+              ? "glass shadow-lg shadow-black/5 dark:shadow-black/20"
+              : ""
           }`}
         >
-          <div className="flex items-center justify-between">
-            {/* Logo - code-themed design */}
-            <motion.div
-              className="flex items-center space-x-3 transition-transform hover:scale-105"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          {/* Logo - Refined monogram with name */}
+          <motion.a
+            href="#home"
+            className="group flex items-center gap-3 rounded-full py-1 pl-1 pr-4 transition-colors hover:bg-foreground/5"
+            whileTap={{ scale: 0.98 }}
+          >
+            {/* Monogram */}
+            <div className="relative flex size-9 items-center justify-center overflow-hidden rounded-full bg-foreground text-background">
+              <span className="text-sm font-semibold tracking-tight">RW</span>
+              {/* Subtle shine effect on hover */}
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+            </div>
+            {/* Name - hidden on mobile when scrolled */}
+            <span
+              className={`font-medium tracking-tight text-foreground transition-all duration-300 ${
+                isScrolled ? "hidden sm:block" : ""
+              }`}
             >
-              <div className="relative">
-                <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] shadow-lg">
-                  <div className="flex flex-col space-y-0.5">
-                    <div className="flex space-x-0.5">
-                      <div className="size-1 rounded-full bg-white/90"></div>
-                      <div className="size-1 rounded-full bg-white/70"></div>
-                    </div>
-                    <div className="flex space-x-0.5">
-                      <div className="size-1 rounded-full bg-white/70"></div>
-                      <div className="size-1 rounded-full bg-white/90"></div>
-                    </div>
-                  </div>
-                </div>
-                {/* Subtle glow effect */}
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] opacity-20 blur-md"></div>
-              </div>
-              <div className="flex flex-col">
-                <span className="gradient-text text-lg font-bold tracking-tight">
-                  Russell Welch
-                </span>
-                <span className="font-mono text-xs text-muted-foreground/80">
-                  russellwelch.dev
-                </span>
-              </div>
-            </motion.div>
+              Russell Welch
+            </span>
+          </motion.a>
 
-            {/* Desktop Navigation - enhanced with code-inspired styling */}
-            <div className="hidden items-center space-x-1 md:flex">
-              {navItems.map((item, index) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  className="group relative rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:text-foreground"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <span className="relative z-10">{item.name}</span>
-                  {/* Hover background */}
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[hsl(var(--portfolio-primary))]/10 to-[hsl(var(--portfolio-accent))]/10 opacity-0 transition-opacity group-hover:opacity-100" />
-                  {/* Bottom accent line */}
-                  <span className="absolute -bottom-0.5 left-1/2 h-0.5 w-0 -translate-x-1/2 rounded-full bg-gradient-to-r from-[hsl(var(--portfolio-primary))] to-[hsl(var(--portfolio-accent))] transition-all group-hover:w-3/4" />
-                  {/* Code-inspired dots */}
-                  <div className="absolute -left-1 top-1/2 flex -translate-y-1/2 flex-col space-y-0.5 opacity-0 transition-opacity group-hover:opacity-50">
-                    <div className="size-0.5 rounded-full bg-[hsl(var(--portfolio-primary))]" />
-                    <div className="size-0.5 rounded-full bg-[hsl(var(--portfolio-accent))]" />
-                  </div>
-                </motion.a>
-              ))}
+          {/* Desktop Navigation - Pill style with active indicator */}
+          <div className="hidden items-center md:flex">
+            <div className="flex items-center gap-1 rounded-full bg-muted/50 p-1">
+              {navItems.map((item, index) => {
+                const isActive =
+                  activeSection === item.href.replace("#", "");
+                return (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    className={`relative rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                  >
+                    {/* Active pill background */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNav"
+                        className="absolute inset-0 rounded-full bg-background shadow-sm"
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                    <span className="relative z-10">{item.name}</span>
+                  </motion.a>
+                );
+              })}
             </div>
+          </div>
 
-            {/* Theme Toggle & Mobile Menu */}
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="rounded-full"
-              >
+          {/* Right side - Theme toggle & Mobile menu */}
+          <div className="flex items-center gap-1">
+            {/* Theme Toggle - refined with animation */}
+            <motion.button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="relative flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+              whileTap={{ scale: 0.9 }}
+              aria-label="Toggle theme"
+            >
+              <AnimatePresence mode="wait">
                 {theme === "dark" ? (
-                  <Sun className="size-4" />
+                  <motion.div
+                    key="sun"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Sun className="size-[18px]" />
+                  </motion.div>
                 ) : (
-                  <Moon className="size-4" />
+                  <motion.div
+                    key="moon"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Moon className="size-[18px]" />
+                  </motion.div>
                 )}
-              </Button>
+              </AnimatePresence>
+            </motion.button>
 
-              {/* Mobile Menu Button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full md:hidden"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-9 rounded-full md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <AnimatePresence mode="wait">
                 {isMobileMenuOpen ? (
-                  <X className="size-4" />
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <X className="size-[18px]" />
+                  </motion.div>
                 ) : (
-                  <Menu className="size-4" />
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Menu className="size-[18px]" />
+                  </motion.div>
                 )}
-              </Button>
-            </div>
+              </AnimatePresence>
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu - keep AnimatePresence for functionality */}
+      {/* Mobile Menu - Refined slide-down */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="mx-4 mt-2 md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-4 mt-2 overflow-hidden md:hidden"
           >
-            <div className="glass rounded-2xl p-4">
-              <div className="flex flex-col space-y-3">
-                {navItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-2 text-sm font-medium text-muted-foreground transition-colors hover:translate-x-1 hover:text-foreground"
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </div>
+            <div className="glass rounded-2xl p-2">
+              {navItems.map((item, index) => (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  {item.name}
+                </motion.a>
+              ))}
             </div>
           </motion.div>
         )}
