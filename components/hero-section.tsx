@@ -5,8 +5,8 @@ import { motion } from "motion/react";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Lazy load Hero3D for better performance
-const Hero3D = lazy(() => import("./hero-3d"));
+// Lazy load the morphing geometry for better performance
+const MorphingGeometry = lazy(() => import("./morphing-geometry"));
 
 const socialLinks = [
   {
@@ -65,18 +65,17 @@ const shouldDisable3D = () => {
   return false;
 };
 
-// Simple CSS-based background fallback
+// Simple CSS-based background fallback - uses theme-aware colors
 function SimpleFallback() {
   return (
     <div className="absolute inset-0 -z-10 size-full">
       <div
-        className="size-full"
+        className="size-full bg-background"
         style={{
-          background: `
-            radial-gradient(circle at 30% 20%, rgba(123, 92, 255, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 70% 80%, rgba(255, 123, 92, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 40% 60%, rgba(123, 92, 255, 0.1) 0%, transparent 50%),
-            linear-gradient(135deg, rgba(15, 15, 15, 0.9) 0%, rgba(25, 25, 35, 0.9) 100%)
+          backgroundImage: `
+            radial-gradient(circle at 30% 20%, hsl(var(--portfolio-primary) / 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 70% 80%, hsl(var(--portfolio-accent) / 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 40% 60%, hsl(var(--portfolio-primary) / 0.1) 0%, transparent 50%)
           `,
         }}
       />
@@ -118,23 +117,15 @@ export function HeroSection() {
       id="home"
       className="relative flex min-h-screen items-center justify-center pb-20"
     >
-      {/* 3D Background or Fallback */}
+      {/* Morphing Geometry Background */}
       {disable3D ? (
         <SimpleFallback />
       ) : (
         <Suspense fallback={<SimpleFallback />}>
-          <Hero3D />
+          <MorphingGeometry />
         </Suspense>
       )}
 
-      {/* Background Elements */}
-      <div className="absolute inset-0 -z-20">
-        <div className="animate-float absolute left-1/4 top-1/4 hidden size-96 rounded-full bg-[hsl(var(--portfolio-primary))] opacity-20 mix-blend-multiply blur-xl md:block" />
-        <div
-          className="animate-float absolute bottom-1/4 right-1/4 size-96 rounded-full bg-[hsl(var(--portfolio-accent))] opacity-20 mix-blend-multiply blur-xl"
-          style={{ animationDelay: "2s" }}
-        />
-      </div>
 
       <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 lg:px-8">
         <div className="relative z-10 grid items-center gap-12 lg:grid-cols-2">
@@ -145,8 +136,6 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative space-y-8"
           >
-            {/* Mobile text readability backdrop */}
-            <div className="absolute inset-0 -z-10 -m-4 rounded-3xl bg-background/40 backdrop-blur-sm md:hidden" />
 
             {/* Greeting */}
             <motion.div

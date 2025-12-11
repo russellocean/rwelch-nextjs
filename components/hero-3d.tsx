@@ -9,53 +9,41 @@ import {
   useCallback,
 } from "react";
 import { Canvas, useFrame, useThree, extend } from "@react-three/fiber";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import {
-  EffectComposer,
-  Bloom,
-  ChromaticAberration,
-} from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
 import { useTheme } from "next-themes";
 import * as THREE from "three";
-import RayMarchMaterial from "../materials/RayMarchMaterial";
+import GradientMeshMaterial from "../materials/GradientMeshMaterial";
 
 // Extend R3F with our custom material
-extend({ RayMarchMaterial });
+extend({ GradientMeshMaterial });
 
-// Theme-aware color palettes
+// Theme-aware color palettes - Vercel-inspired flowing gradients
 const themeColors = {
   light: {
-    primary: new THREE.Color("#7B5CFF"),
-    secondary: new THREE.Color("#FF5EDB"),
-    accent: new THREE.Color("#00D9FF"),
-    background: new THREE.Color("#F8FAFC"),
-    rim: new THREE.Color("#4F46E5"),
-    glow: new THREE.Color("#6366F1"),
-    ambient: new THREE.Color("#E2E8F0"),
-    directional: new THREE.Color("#7B5CFF"),
-    intensity: 0.8,
-    bloomIntensity: 0.4,
-    glowIntensity: 0.3,
+    // "Arctic Precision" - Vibrant blues, no muddy grays
+    color1: new THREE.Color("#2563EB"), // Rich blue
+    color2: new THREE.Color("#0EA5E9"), // Bright sky blue
+    color3: new THREE.Color("#06B6D4"), // Cyan
+    background: new THREE.Color("#FFFFFF"), // Pure white (transparent base)
+    intensity: 0.6,
+    noiseScale: 3.5,
+    speed: 0.25,
   },
   dark: {
-    primary: new THREE.Color("#8B5DFF"),
-    secondary: new THREE.Color("#FF6EEB"),
-    accent: new THREE.Color("#10E9FF"),
-    background: new THREE.Color("#0F0F23"),
-    rim: new THREE.Color("#A855F7"),
-    glow: new THREE.Color("#8B5CF6"),
-    ambient: new THREE.Color("#1E293B"),
-    directional: new THREE.Color("#8B5DFF"),
-    intensity: 1.2,
-    bloomIntensity: 0.8,
-    glowIntensity: 0.6,
+    // "Midnight Ember" - Editorial, warm with terracotta accent
+    color1: new THREE.Color("#F97316"), // Burnt orange/terracotta
+    color2: new THREE.Color("#EA580C"), // Deep burnt orange
+    color3: new THREE.Color("#D4A574"), // Warm sand/cream
+    background: new THREE.Color("#0C0A09"), // Rich warm black
+    intensity: 0.75,
+    noiseScale: 3.0,
+    speed: 0.2,
   },
 };
 
 // Performance configuration based on device capabilities
 const getPerformanceConfig = () => {
-  if (typeof window === "undefined") return { lowEnd: false, mobile: false };
+  if (typeof window === "undefined")
+    return { lowEnd: false, mobile: false, maxPixelRatio: 1.0 };
 
   const isMobile =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -72,17 +60,15 @@ const getPerformanceConfig = () => {
   return {
     lowEnd: isLowEnd || hasLowMemory,
     mobile: isMobile,
-    maxPixelRatio: isLowEnd ? 0.5 : isMobile ? 0.75 : 1.0,
-    disablePostProcessing: isLowEnd || hasLowMemory,
+    maxPixelRatio: isLowEnd ? 0.6 : isMobile ? 0.8 : 1.0,
   };
 };
 
-// Ray-marched quad component
-function RayMarchQuad() {
+// Gradient mesh component - the core visual
+function GradientMesh() {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const { camera, gl, size } = useThree();
+  const { size, viewport } = useThree();
   const { theme, resolvedTheme } = useTheme();
-  const [envMap, setEnvMap] = useState<THREE.CubeTexture | null>(null);
   const [targetMousePosition, setTargetMousePosition] = useState(
     new THREE.Vector2(0.5, 0.5)
   );
@@ -92,6 +78,11 @@ function RayMarchQuad() {
 
   const performanceConfig = useMemo(() => getPerformanceConfig(), []);
 
+  // Scale plane to fill viewport
+  const scale = useMemo(() => {
+    return [viewport.width, viewport.height, 1] as [number, number, number];
+  }, [viewport.width, viewport.height]);
+
   // Get current theme colors
   const currentTheme = useMemo(() => {
     const activeTheme = resolvedTheme || theme || "dark";
@@ -100,60 +91,12 @@ function RayMarchQuad() {
     );
   }, [theme, resolvedTheme]);
 
-  // Load HDRI environment map with error handling and performance consideration
-  useEffect(() => {
-    // Skip expensive HDRI loading on low-end devices
-    if (performanceConfig.lowEnd) return;
-
-    const loader = new RGBELoader();
-    const abortController = new AbortController();
-
-    // Use lower resolution for better performance
-    const hdriUrl = performanceConfig.mobile
-      ? "/textures/studio_small_09_512.hdr"
-      : "/textures/studio_small_09_1k.hdr";
-
-    loader.load(
-      hdriUrl,
-      (texture) => {
-        if (abortController.signal.aborted) return;
-
-        texture.mapping = THREE.EquirectangularReflectionMapping;
-        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(
-          performanceConfig.mobile ? 256 : 512
-        );
-        const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
-
-        // Convert HDRI to cube map
-        const scene = new THREE.Scene();
-        const geometry = new THREE.SphereGeometry(100, 32, 16);
-        const material = new THREE.MeshBasicMaterial({
-          map: texture,
-          side: THREE.BackSide,
-        });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-
-        cubeCamera.update(gl, scene);
-        setEnvMap(cubeRenderTarget.texture);
-      },
-      undefined,
-      (error) => {
-        console.warn("Failed to load HDRI:", error);
-      }
-    );
-
-    return () => {
-      abortController.abort();
-    };
-  }, [gl, performanceConfig]);
-
-  // Optimized mouse tracking with better throttling
+  // Optimized mouse tracking
   const handleMouseMove = useCallback((event: MouseEvent) => {
     setTargetMousePosition(
       new THREE.Vector2(
         event.clientX / window.innerWidth,
-        event.clientY / window.innerHeight
+        1.0 - event.clientY / window.innerHeight
       )
     );
   }, []);
@@ -164,7 +107,7 @@ function RayMarchQuad() {
 
     const throttledMouseMove = (event: MouseEvent) => {
       const now = performance.now();
-      if (now - lastTime < 32) return; // ~30fps throttling instead of 60fps
+      if (now - lastTime < 50) return; // ~20fps throttling for mouse
       lastTime = now;
 
       if (animationFrame) cancelAnimationFrame(animationFrame);
@@ -178,13 +121,13 @@ function RayMarchQuad() {
     };
   }, [handleMouseMove]);
 
-  // Animation loop with performance monitoring
+  // Animation loop
   useFrame((state, delta) => {
-    // Skip updates if frame rate is too low (performance throttling)
-    if (delta > 0.1) return; // Skip if frame took longer than 100ms
+    // Skip if frame rate is too low
+    if (delta > 0.1) return;
 
-    // Smooth mouse interpolation with adaptive lerp rate
-    const lerpRate = performanceConfig.lowEnd ? 0.05 : 0.1;
+    // Smooth mouse interpolation
+    const lerpRate = performanceConfig.lowEnd ? 0.03 : 0.05;
     smoothMousePosition.lerp(targetMousePosition, lerpRate);
     setSmoothMousePosition(smoothMousePosition.clone());
 
@@ -193,170 +136,54 @@ function RayMarchQuad() {
         uTime: number;
         uResolution: THREE.Vector2;
         uMouse: THREE.Vector2;
-        uCameraPosition: THREE.Vector3;
-        uViewMatrix: THREE.Matrix4;
-        uProjectionMatrix: THREE.Matrix4;
-        uEnvMap: THREE.CubeTexture | null;
-        uQuality: number;
-        uThemeColor1: THREE.Color;
-        uThemeColor2: THREE.Color;
-        uThemeAccent: THREE.Color;
-        uThemeBackground: THREE.Color;
-        uThemeRim: THREE.Color;
-        uThemeGlow: THREE.Color;
+        uColor1: THREE.Color;
+        uColor2: THREE.Color;
+        uColor3: THREE.Color;
+        uBackground: THREE.Color;
         uIntensity: number;
-        uGlowIntensity: number;
+        uNoiseScale: number;
+        uSpeed: number;
       };
 
       material.uTime = state.clock.elapsedTime;
       material.uResolution.set(size.width, size.height);
       material.uMouse.copy(smoothMousePosition);
-      material.uCameraPosition.copy(camera.position);
-      material.uViewMatrix.copy(camera.matrixWorldInverse);
-      material.uProjectionMatrix.copy(camera.projectionMatrix);
-
-      // Set quality based on device performance
-      material.uQuality = performanceConfig.lowEnd
-        ? 0.0
-        : performanceConfig.mobile
-        ? 0.5
-        : 1.0;
 
       // Update theme colors
-      material.uThemeColor1.copy(currentTheme.primary);
-      material.uThemeColor2.copy(currentTheme.secondary);
-      material.uThemeAccent.copy(currentTheme.accent);
-      material.uThemeBackground.copy(currentTheme.background);
-      material.uThemeRim.copy(currentTheme.rim);
-      material.uThemeGlow.copy(currentTheme.glow);
+      material.uColor1.copy(currentTheme.color1);
+      material.uColor2.copy(currentTheme.color2);
+      material.uColor3.copy(currentTheme.color3);
+      material.uBackground.copy(currentTheme.background);
       material.uIntensity = currentTheme.intensity;
-      material.uGlowIntensity = currentTheme.glowIntensity;
-
-      if (envMap) {
-        material.uEnvMap = envMap;
-      }
+      material.uNoiseScale = currentTheme.noiseScale;
+      material.uSpeed = performanceConfig.lowEnd
+        ? currentTheme.speed * 0.7
+        : currentTheme.speed;
     }
   });
 
-  const material = useMemo(() => new RayMarchMaterial(), []);
+  const material = useMemo(() => new GradientMeshMaterial(), []);
 
   return (
-    <mesh
-      position={[0, 0, 0]}
-      scale={performanceConfig.mobile ? [4, 4, 1] : [6, 6, 1]}
-    >
+    <mesh position={[0, 0, 0]} scale={scale}>
       <planeGeometry args={[1, 1]} />
       <primitive
         object={material}
         ref={materialRef}
         transparent
-        side={THREE.DoubleSide}
+        depthWrite={false}
+        blending={THREE.NormalBlending}
       />
     </mesh>
   );
 }
 
-// Fallback component for loading
-function LoadingFallback() {
-  const { theme, resolvedTheme } = useTheme();
-
-  const currentTheme = useMemo(() => {
-    const activeTheme = resolvedTheme || theme || "dark";
-    return (
-      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
-    );
-  }, [theme, resolvedTheme]);
-
-  return (
-    <mesh position={[0, 0, 0]} scale={2.5}>
-      <coneGeometry args={[1.2, 2, 4]} />
-      <meshPhysicalMaterial
-        metalness={0}
-        roughness={0.02}
-        transmission={0.98}
-        thickness={0.5}
-        transparent
-        opacity={0.95}
-        color="#ffffff"
-        emissive={currentTheme.primary}
-        emissiveIntensity={0.03}
-      />
-    </mesh>
-  );
-}
-
-// Main scene with post-processing
+// Main scene - clean and simple
 function Scene() {
-  const { theme, resolvedTheme } = useTheme();
-
-  const currentTheme = useMemo(() => {
-    const activeTheme = resolvedTheme || theme || "dark";
-    return (
-      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
-    );
-  }, [theme, resolvedTheme]);
-
   return (
-    <>
-      {/* Theme-aware lighting */}
-      <ambientLight intensity={0.2} color={currentTheme.ambient} />
-      <directionalLight
-        position={[5, 5, 5]}
-        intensity={0.4}
-        color={currentTheme.directional}
-      />
-
-      <Suspense fallback={<LoadingFallback />}>
-        <RayMarchQuad />
-      </Suspense>
-    </>
-  );
-}
-
-// Optimized post-processing effects
-function Effects() {
-  const { theme, resolvedTheme } = useTheme();
-  const performanceConfig = useMemo(() => getPerformanceConfig(), []);
-
-  const currentTheme = useMemo(() => {
-    const activeTheme = resolvedTheme || theme || "dark";
-    return (
-      themeColors[activeTheme as keyof typeof themeColors] || themeColors.dark
-    );
-  }, [theme, resolvedTheme]);
-
-  // Disable effects entirely on low-end devices
-  if (performanceConfig.disablePostProcessing) {
-    return null;
-  }
-
-  if (performanceConfig.mobile) {
-    // Minimal effects for mobile
-    return (
-      <EffectComposer>
-        <Bloom
-          intensity={currentTheme.bloomIntensity}
-          luminanceThreshold={0.3}
-          luminanceSmoothing={0.4}
-          blendFunction={BlendFunction.ADD}
-        />
-      </EffectComposer>
-    );
-  }
-
-  return (
-    <EffectComposer>
-      <Bloom
-        intensity={currentTheme.bloomIntensity * 2}
-        luminanceThreshold={0.2}
-        luminanceSmoothing={0.6}
-        blendFunction={BlendFunction.ADD}
-      />
-      <ChromaticAberration
-        blendFunction={BlendFunction.NORMAL}
-        offset={new THREE.Vector2(0.0005, 0.0005)}
-      />
-    </EffectComposer>
+    <Suspense fallback={null}>
+      <GradientMesh />
+    </Suspense>
   );
 }
 
@@ -367,21 +194,13 @@ export default function Hero3D() {
   const performanceConfig = useMemo(() => getPerformanceConfig(), []);
 
   useEffect(() => {
-    // For blob effects, we can use very low resolution
     const basePixelRatio = window.devicePixelRatio || 1;
     const optimizedRatio = Math.min(
       basePixelRatio,
       performanceConfig.maxPixelRatio || 1.0
     );
 
-    // Even more aggressive: Cap at 0.8 for desktop, 0.6 for mobile, 0.4 for low-end
-    const blobOptimizedRatio = performanceConfig.lowEnd
-      ? 0.4
-      : performanceConfig.mobile
-      ? 0.6
-      : 0.8;
-
-    setPixelRatio(Math.min(optimizedRatio, blobOptimizedRatio));
+    setPixelRatio(optimizedRatio);
 
     // Lazy load the 3D scene when component comes into view
     const observer = new IntersectionObserver(
@@ -400,6 +219,7 @@ export default function Hero3D() {
     return () => observer.disconnect();
   }, [performanceConfig]);
 
+  // Fallback gradient while loading or before visible
   if (!isVisible) {
     return (
       <div
@@ -408,74 +228,44 @@ export default function Hero3D() {
         style={{
           background:
             resolvedTheme === "light"
-              ? "linear-gradient(135deg, rgba(123, 92, 255, 0.05) 0%, rgba(255, 123, 92, 0.05) 100%)"
-              : "linear-gradient(135deg, rgba(123, 92, 255, 0.1) 0%, rgba(255, 123, 92, 0.1) 100%)",
+              ? "radial-gradient(ellipse 80% 60% at 30% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 70% 60%, rgba(8, 145, 178, 0.1) 0%, transparent 50%)"
+              : "radial-gradient(ellipse 80% 60% at 30% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 70% 60%, rgba(212, 165, 116, 0.06) 0%, transparent 50%)",
         }}
       />
     );
   }
 
-  // Mobile-optimized positioning and sizing
-  const canvasStyle = performanceConfig.mobile
-    ? {
-        // Position on mobile: smaller, offset to right side, less opacity
-        position: "absolute" as const,
-        top: "0",
-        right: "0",
-        width: "60%", // Reduced width on mobile
-        height: "60%", // Reduced height on mobile
-        opacity: resolvedTheme === "light" ? "0.2" : "0.3", // Lower opacity in light mode
-        zIndex: "-10",
-        pointerEvents: "none" as const,
-      }
-    : {
-        // Desktop: full coverage
-        position: "absolute" as const,
-        inset: "0",
-        width: "100%",
-        height: "100%",
-        zIndex: "-10",
-      };
-
   return (
-    <div className="absolute inset-0 -z-10 size-full">
-      <div style={canvasStyle}>
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 65 }}
-          gl={{
-            antialias: !performanceConfig.lowEnd,
-            alpha: true,
-            premultipliedAlpha: false,
-            powerPreference: "high-performance",
-            toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: resolvedTheme === "light" ? 0.8 : 1.1,
-            // Reduce context creation overhead
-            preserveDrawingBuffer: false,
-            failIfMajorPerformanceCaveat: true,
-          }}
-          style={{
-            background: "transparent",
-            width: "100%",
-            height: "100%",
-          }}
-          dpr={pixelRatio}
-          performance={{ min: 0.7, max: 1 }} // More aggressive performance management
-        >
-          <Scene />
-          <Effects />
-        </Canvas>
-      </div>
+    <div className="absolute inset-0 -z-10 size-full" data-hero-3d>
+      <Canvas
+        camera={{ position: [0, 0, 1], fov: 75 }}
+        gl={{
+          antialias: false, // Not needed for gradient effects
+          alpha: true,
+          premultipliedAlpha: false,
+          powerPreference: "high-performance",
+          preserveDrawingBuffer: false,
+          failIfMajorPerformanceCaveat: true,
+        }}
+        style={{
+          background: "transparent",
+          width: "100%",
+          height: "100%",
+        }}
+        dpr={pixelRatio}
+      >
+        <Scene />
+      </Canvas>
 
-      {/* Theme-aware mobile text readability overlay */}
+      {/* Mobile text readability overlay */}
       {performanceConfig.mobile && (
         <div
-          className="absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               resolvedTheme === "light"
-                ? "linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 70%)"
-                : "linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, transparent 70%)",
-            pointerEvents: "none",
+                ? "linear-gradient(135deg, rgba(245, 249, 252, 0.6) 0%, transparent 60%)"
+                : "linear-gradient(135deg, rgba(12, 10, 9, 0.5) 0%, transparent 60%)",
           }}
         />
       )}
