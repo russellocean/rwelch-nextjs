@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import {
+  Check,
+  Copy,
+  Download,
+  Github,
+  Linkedin,
   Mail,
   MapPin,
-  Linkedin,
-  Github,
-  Copy,
-  Check,
-  Download,
 } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const contactInfo = {
   email: "russellwelch17@gmail.com",
@@ -102,12 +102,7 @@ export function ContactCard() {
         </div>
 
         {/* Download Resume */}
-        <Button
-          variant="gradient"
-          size="lg"
-          className="w-full"
-          asChild
-        >
+        <Button variant="gradient" size="lg" className="w-full" asChild>
           <a href="/RussellWelchResume.pdf" download="RussellWelchResume.pdf">
             <Download className="mr-2 size-4" />
             Download Resume

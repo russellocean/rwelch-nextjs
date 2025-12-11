@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useTheme } from "next-themes";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
 // Theme colors
@@ -57,10 +57,10 @@ function MorphingTerrain() {
         const v = (j / gridSize) * Math.PI * 2;
 
         // Calculate point on torus knot
-        const r = torusRadius + tubeRadius * Math.cos(q * u / p + v);
+        const r = torusRadius + tubeRadius * Math.cos((q * u) / p + v);
         const knotX = r * Math.cos(u);
         const knotY = r * Math.sin(u);
-        const knotZ = tubeRadius * Math.sin(q * u / p + v);
+        const knotZ = tubeRadius * Math.sin((q * u) / p + v);
 
         knot.push(knotX, knotY, knotZ);
 
@@ -69,9 +69,15 @@ function MorphingTerrain() {
         const helixV = (j / gridSize) * Math.PI * 2;
         const strandOffset = Math.floor(j / (gridSize / 2)) * Math.PI; // Split into two strands
 
-        const helixX = helixRadius * Math.cos(helixU + strandOffset) * (1 + 0.3 * Math.cos(helixV));
+        const helixX =
+          helixRadius *
+          Math.cos(helixU + strandOffset) *
+          (1 + 0.3 * Math.cos(helixV));
         const helixY = (i / gridSize - 0.5) * helixHeight;
-        const helixZ = helixRadius * Math.sin(helixU + strandOffset) * (1 + 0.3 * Math.cos(helixV));
+        const helixZ =
+          helixRadius *
+          Math.sin(helixU + strandOffset) *
+          (1 + 0.3 * Math.cos(helixV));
 
         helix.push(helixX, helixY, helixZ);
       }
@@ -108,7 +114,8 @@ function MorphingTerrain() {
   }, [basePositions]);
 
   const color = useMemo(() => {
-    const colors = resolvedTheme === "light" ? themeColors.light : themeColors.dark;
+    const colors =
+      resolvedTheme === "light" ? themeColors.light : themeColors.dark;
     return new THREE.Color(colors.primary);
   }, [resolvedTheme]);
 
@@ -122,7 +129,7 @@ function MorphingTerrain() {
 
   // Smooth easing functions
   const easeInOutCubic = (t: number) => {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
   };
 
   // Animate morphing cycle
@@ -201,7 +208,8 @@ function MorphingTerrain() {
         const baseZ = basePositions[idx + 2];
 
         // Terrain height (perlin-like noise)
-        const terrainHeight = noise(baseX * 3, baseZ * 3, time * 0.5) * 0.25 * flatToTerrain;
+        const terrainHeight =
+          noise(baseX * 3, baseZ * 3, time * 0.5) * 0.25 * flatToTerrain;
 
         // Pre-calculated torus knot position
         const knotX = knotPositions[idx];
@@ -214,7 +222,8 @@ function MorphingTerrain() {
         const helixZ = helixPositions[idx + 2];
 
         // Add subtle noise displacement to knot surface
-        const knotNoise = noise(knotX * 3, knotY * 3, time * 0.3) * 0.08 * flatToTerrain;
+        const knotNoise =
+          noise(knotX * 3, knotY * 3, time * 0.3) * 0.08 * flatToTerrain;
         const noisedKnotX = knotX * (1 + knotNoise);
         const noisedKnotY = knotY * (1 + knotNoise);
         const noisedKnotZ = knotZ * (1 + knotNoise);
@@ -264,15 +273,11 @@ function MorphingTerrain() {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={positions.length / 3}
-            array={positions}
-            itemSize={3}
+            args={[positions, 3]}
           />
           <bufferAttribute
             attach="index"
-            count={indices.length}
-            array={indices}
-            itemSize={1}
+            args={[indices, 1]}
           />
         </bufferGeometry>
         <lineBasicMaterial color={color} transparent opacity={0.7} />
@@ -291,6 +296,7 @@ function FloatingElements() {
 
   const elements = useMemo(() => {
     return Array.from({ length: elementCount }, (_, i) => ({
+      id: `element-${i}`,
       position: [
         (Math.random() - 0.5) * 8, // Full width spread
         (Math.random() - 0.5) * 5, // Full height spread
@@ -304,7 +310,8 @@ function FloatingElements() {
   }, []);
 
   const color = useMemo(() => {
-    const colors = resolvedTheme === "light" ? themeColors.light : themeColors.dark;
+    const colors =
+      resolvedTheme === "light" ? themeColors.light : themeColors.dark;
     return new THREE.Color(colors.secondary);
   }, [resolvedTheme]);
 
@@ -314,7 +321,8 @@ function FloatingElements() {
 
     groupRef.current.children.forEach((child, i) => {
       const el = elements[i];
-      child.position.y = el.position[1] + Math.sin(time * el.speed + el.phase) * 0.3;
+      child.position.y =
+        el.position[1] + Math.sin(time * el.speed + el.phase) * 0.3;
       child.rotation.z = time * 0.2 + el.rotation;
     });
   });
@@ -323,70 +331,16 @@ function FloatingElements() {
 
   return (
     <group ref={groupRef} position={[0, 0, 0]} scale={scale}>
-      {elements.map((el, i) => (
-        <mesh key={i} position={el.position}>
+      {elements.map((el) => (
+        <mesh key={el.id} position={el.position}>
           <octahedronGeometry args={[el.size, 0]} />
-          <meshBasicMaterial color={color} wireframe transparent opacity={0.7} />
+          <meshBasicMaterial
+            color={color}
+            wireframe
+            transparent
+            opacity={0.7}
+          />
         </mesh>
-      ))}
-    </group>
-  );
-}
-
-
-// Data stream lines
-function DataStreams() {
-  const groupRef = useRef<THREE.Group>(null);
-  const { resolvedTheme } = useTheme();
-  const { viewport } = useThree();
-
-  const streamCount = 8;
-
-  const streams = useMemo(() => {
-    return Array.from({ length: streamCount }, (_, i) => {
-      const y = (i / (streamCount - 1) - 0.5) * 2;
-      return {
-        startY: y,
-        speed: 0.5 + Math.random() * 0.5,
-        length: 0.3 + Math.random() * 0.4,
-        phase: Math.random() * Math.PI * 2,
-      };
-    });
-  }, []);
-
-  const color = useMemo(() => {
-    const colors = resolvedTheme === "light" ? themeColors.light : themeColors.dark;
-    return new THREE.Color(colors.primary);
-  }, [resolvedTheme]);
-
-  useFrame((state) => {
-    if (!groupRef.current) return;
-    const time = state.clock.elapsedTime;
-
-    groupRef.current.children.forEach((child, i) => {
-      const stream = streams[i];
-      // Move streams from right to left, reset when off screen
-      const x = ((time * stream.speed + stream.phase) % 3) - 1;
-      child.position.x = x;
-    });
-  });
-
-  const scale = Math.min(viewport.width, viewport.height) * 0.3;
-
-  return (
-    <group ref={groupRef} position={[viewport.width * 0.25, 0, -0.5]} scale={scale}>
-      {streams.map((stream, i) => (
-        <line key={i}>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              count={2}
-              array={new Float32Array([0, stream.startY, 0, stream.length, stream.startY, 0])}
-              itemSize={3}
-            />
-          </bufferGeometry>
-          <lineBasicMaterial color={color} transparent opacity={0.3} />
-        </line>
       ))}
     </group>
   );

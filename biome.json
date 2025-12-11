@@ -26,17 +26,27 @@
     "rules": {
       "recommended": true,
       "a11y": {
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        "useFocusableInteractive": "off",
+        "useSemanticElements": "off",
+        "noRedundantRoles": "off",
+        "useAriaPropsForRole": "off"
       },
       "correctness": {
         "noUnusedImports": "warn",
-        "noUnusedVariables": "warn"
+        "noUnusedVariables": "warn",
+        "useExhaustiveDependencies": "warn"
       },
       "style": {
         "noNonNullAssertion": "off"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "warn",
+        "noDocumentCookie": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   },

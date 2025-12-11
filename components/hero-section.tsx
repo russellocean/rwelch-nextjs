@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, Suspense, lazy } from "react";
+import { ArrowDown, FileText, Github, Linkedin, Mail } from "lucide-react";
 import { motion } from "motion/react";
-import { ArrowDown, Github, Linkedin, Mail, FileText } from "lucide-react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
 // Lazy load the morphing geometry for better performance
 const MorphingGeometry = lazy(() => import("./morphing-geometry"));
@@ -50,9 +50,9 @@ const shouldDisable3D = () => {
   const memoryInfo = webglContext.getExtension("WEBGL_debug_renderer_info");
   if (memoryInfo) {
     const unmaskedRenderer = webglContext.getParameter(
-      memoryInfo.UNMASKED_RENDERER_WEBGL
+      memoryInfo.UNMASKED_RENDERER_WEBGL,
     ) as string;
-    if (unmaskedRenderer && unmaskedRenderer.includes("Intel HD")) {
+    if (unmaskedRenderer?.includes("Intel HD")) {
       return true;
     }
   }

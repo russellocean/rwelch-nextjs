@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Menu, Moon, Sun, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
-import { Moon, Sun, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "motion/react";
 
 const navItems = [
   { name: "About", href: "#about" },
@@ -88,8 +88,7 @@ export function Navigation() {
           <div className="hidden items-center md:flex">
             <div className="flex items-center gap-1 rounded-full bg-muted/50 p-1">
               {navItems.map((item, index) => {
-                const isActive =
-                  activeSection === item.href.replace("#", "");
+                const isActive = activeSection === item.href.replace("#", "");
                 return (
                   <motion.a
                     key={item.name}

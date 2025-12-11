@@ -1,19 +1,19 @@
 "use client";
 
-import { FadeInUp } from "@/components/motion-wrappers";
-import { motion } from "motion/react";
 import {
+  Award,
+  Check,
+  Copy,
+  Download,
+  Github,
+  GraduationCap,
+  Linkedin,
   Mail,
   MapPin,
-  Linkedin,
-  Github,
-  Download,
-  Copy,
-  Check,
-  GraduationCap,
-  Award,
 } from "lucide-react";
+import { motion } from "motion/react";
 import { useState } from "react";
+import { FadeInUp } from "@/components/motion-wrappers";
 
 const experience = [
   {
@@ -99,10 +99,7 @@ const certifications = [
   },
 ];
 
-const awards = [
-  "CTE Department Coding Award (2021)",
-  "CTE Completer (2021)",
-];
+const awards = ["CTE Department Coding Award (2021)", "CTE Completer (2021)"];
 
 const contactInfo = {
   email: "russellwelch17@gmail.com",
@@ -142,11 +139,14 @@ export function ResumeSection() {
 
               {/* Email */}
               <button
+                type="button"
                 onClick={copyEmail}
                 className="mb-3 flex w-full items-center gap-3 rounded-xl border border-border bg-background p-3 text-left transition-colors hover:bg-muted/50"
               >
                 <Mail className="size-4 text-muted-foreground" />
-                <span className="flex-1 truncate text-sm">{contactInfo.email}</span>
+                <span className="flex-1 truncate text-sm">
+                  {contactInfo.email}
+                </span>
                 {copiedEmail ? (
                   <Check className="size-4 text-green-500" />
                 ) : (
@@ -202,17 +202,23 @@ export function ResumeSection() {
 
               <div className="mb-4">
                 <p className="font-medium">{education.degree}</p>
-                <p className="text-sm text-muted-foreground">{education.school}</p>
-                <p className="text-sm text-muted-foreground">{education.period}</p>
+                <p className="text-sm text-muted-foreground">
+                  {education.school}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {education.period}
+                </p>
               </div>
 
               <div className="border-t border-border pt-4">
                 <p className="mb-2 text-sm font-medium">Key Projects</p>
                 <div className="space-y-2">
-                  {education.projects.map((project, index) => (
-                    <div key={index} className="text-sm">
+                  {education.projects.map((project) => (
+                    <div key={project.name} className="text-sm">
                       <p className="font-medium">{project.name}</p>
-                      <p className="text-xs text-muted-foreground">{project.course}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {project.course}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -226,8 +232,8 @@ export function ResumeSection() {
                 <h3 className="text-lg font-semibold">Recognition</h3>
               </div>
 
-              {certifications.map((cert, index) => (
-                <div key={index} className="mb-3">
+              {certifications.map((cert) => (
+                <div key={cert.name} className="mb-3">
                   <p className="font-medium">{cert.name}</p>
                   <p className="text-sm text-muted-foreground">
                     {cert.issuer} · {cert.date}
@@ -237,8 +243,8 @@ export function ResumeSection() {
 
               <div className="border-t border-border pt-3">
                 <p className="mb-2 text-sm font-medium">Awards</p>
-                {awards.map((award, index) => (
-                  <p key={index} className="text-sm text-muted-foreground">
+                {awards.map((award) => (
+                  <p key={award} className="text-sm text-muted-foreground">
                     {award}
                   </p>
                 ))}
@@ -249,12 +255,14 @@ export function ResumeSection() {
           {/* Right Column - Experience */}
           <FadeInUp className="lg:col-span-2">
             <div className="rounded-2xl border border-border bg-card p-6">
-              <h3 className="mb-6 text-lg font-semibold">Professional Experience</h3>
+              <h3 className="mb-6 text-lg font-semibold">
+                Professional Experience
+              </h3>
 
               <div className="space-y-8">
                 {experience.map((job, index) => (
                   <motion.div
-                    key={index}
+                    key={`${job.period}-${job.title}`}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -284,12 +292,14 @@ export function ResumeSection() {
                       <p className="text-sm text-muted-foreground">
                         {job.company} · {job.location}
                       </p>
-                      <p className="text-sm text-muted-foreground/60">{job.period}</p>
+                      <p className="text-sm text-muted-foreground/60">
+                        {job.period}
+                      </p>
 
                       <ul className="mt-3 space-y-2">
-                        {job.achievements.map((achievement, achIndex) => (
+                        {job.achievements.map((achievement) => (
                           <li
-                            key={achIndex}
+                            key={achievement}
                             className="flex items-start gap-2 text-sm text-muted-foreground"
                           >
                             <span className="mt-2 size-1 shrink-0 rounded-full bg-muted-foreground/40" />

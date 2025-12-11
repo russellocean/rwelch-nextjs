@@ -1,9 +1,9 @@
 "use client";
 
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
-import { FadeInUp } from "@/components/motion-wrappers";
+import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { FadeInUp } from "@/components/motion-wrappers";
 
 const projects = [
   {
@@ -112,7 +112,14 @@ const projects = [
     description:
       "Developed a comprehensive parts management system for Goldfinger Monitors, featuring over 1700+ unique part numbers with vendor price tracking. The system coordinates between engineering facilities in the US and manufacturing in Vietnam across multiple departments.",
     image: "/projects/goldfinger-manage.webp",
-    tech: ["React", "Node.js", "PostgreSQL", "Supabase", "TypeScript", "Electron"],
+    tech: [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Supabase",
+      "TypeScript",
+      "Electron",
+    ],
     category: "Internal Tool",
     year: "2022-2023",
     status: "Production",

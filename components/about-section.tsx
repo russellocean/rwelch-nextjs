@@ -1,8 +1,8 @@
 "use client";
 
 import { Briefcase, GraduationCap, Rocket } from "lucide-react";
-import { FadeInUp } from "@/components/motion-wrappers";
 import { motion } from "motion/react";
+import { FadeInUp } from "@/components/motion-wrappers";
 
 const timeline = [
   {
@@ -16,7 +16,8 @@ const timeline = [
     milestone: {
       title: "Graduated Computer Science",
       subtitle: "Clemson University",
-      description: "B.S. in Computer Science with focus on software engineering and web development.",
+      description:
+        "B.S. in Computer Science with focus on software engineering and web development.",
     },
   },
   {
@@ -29,12 +30,14 @@ const timeline = [
     sideProject: {
       title: "Dare2Watch E-commerce Platform",
       year: "2024",
-      description: "Built complete luxury watch e-commerce website with inventory management and Square payment integration.",
+      description:
+        "Built complete luxury watch e-commerce website with inventory management and Square payment integration.",
     },
     education: {
       title: "Computer Science Student",
       subtitle: "Clemson University",
-      description: "Pursuing B.S. in Computer Science while maintaining full-time development role.",
+      description:
+        "Pursuing B.S. in Computer Science while maintaining full-time development role.",
     },
   },
   {
@@ -47,7 +50,8 @@ const timeline = [
     education: {
       title: "Computer Science Student",
       subtitle: "Clemson University",
-      description: "Balancing computer science studies with professional software development experience.",
+      description:
+        "Balancing computer science studies with professional software development experience.",
     },
   },
   {
@@ -62,7 +66,14 @@ const timeline = [
 
 const skills = {
   Frontend: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-  Backend: ["Node.js", "Supabase", "PostgreSQL", "REST APIs", "Prisma", "Drizzle"],
+  Backend: [
+    "Node.js",
+    "Supabase",
+    "PostgreSQL",
+    "REST APIs",
+    "Prisma",
+    "Drizzle",
+  ],
   "Cloud & Tools": ["AWS RDS", "AWS EC2", "Vercel", "Docker", "Git", "Figma"],
   Other: ["Unity", "C#", "Blender", "Python", "Java"],
 };
@@ -94,7 +105,7 @@ export function AboutSection() {
             <div className="space-y-6">
               {timeline.map((item, index) => (
                 <motion.div
-                  key={index}
+                  key={`${item.period}-${item.company}`}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -127,7 +138,9 @@ export function AboutSection() {
                       </span>
                     </div>
                     <h4 className="font-medium">{item.title}</h4>
-                    <p className="text-sm text-muted-foreground">{item.company}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {item.company}
+                    </p>
                     <p className="text-sm leading-relaxed text-muted-foreground/80">
                       {item.description}
                     </p>
@@ -141,7 +154,8 @@ export function AboutSection() {
                             {item.milestone.title}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {item.milestone.subtitle} — {item.milestone.description}
+                            {item.milestone.subtitle} —{" "}
+                            {item.milestone.description}
                           </p>
                         </div>
                       </div>
@@ -170,9 +184,12 @@ export function AboutSection() {
                       <div className="mt-3 flex items-start gap-2 rounded-lg border border-border bg-muted/30 p-3">
                         <GraduationCap className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                         <div>
-                          <p className="text-sm font-medium">{item.education.title}</p>
+                          <p className="text-sm font-medium">
+                            {item.education.title}
+                          </p>
                           <p className="text-xs text-muted-foreground">
-                            {item.education.subtitle} — {item.education.description}
+                            {item.education.subtitle} —{" "}
+                            {item.education.description}
                           </p>
                         </div>
                       </div>
@@ -193,30 +210,32 @@ export function AboutSection() {
             </div>
 
             <div className="space-y-5">
-              {Object.entries(skills).map(([category, items], categoryIndex) => (
-                <motion.div
-                  key={category}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: categoryIndex * 0.1 }}
-                  className="space-y-3"
-                >
-                  <h4 className="text-sm font-medium text-muted-foreground">
-                    {category}
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {items.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:bg-muted"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
+              {Object.entries(skills).map(
+                ([category, items], categoryIndex) => (
+                  <motion.div
+                    key={category}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: categoryIndex * 0.1 }}
+                    className="space-y-3"
+                  >
+                    <h4 className="text-sm font-medium text-muted-foreground">
+                      {category}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {items.map((skill) => (
+                        <span
+                          key={skill}
+                          className="rounded-full border border-border bg-background px-3 py-1.5 text-sm transition-colors hover:bg-muted"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ),
+              )}
             </div>
 
             {/* Stats */}
@@ -227,7 +246,9 @@ export function AboutSection() {
                 { value: "20+", label: "Technologies" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <p className="text-2xl font-semibold tabular-nums">{stat.value}</p>
+                  <p className="text-2xl font-semibold tabular-nums">
+                    {stat.value}
+                  </p>
                   <p className="text-xs text-muted-foreground">{stat.label}</p>
                 </div>
               ))}

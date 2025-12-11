@@ -1,5 +1,5 @@
-import * as THREE from "three";
 import { shaderMaterial } from "@react-three/drei";
+import * as THREE from "three";
 
 /**
  * Vercel-inspired gradient mesh shader
@@ -225,7 +225,7 @@ const GradientMeshMaterial = shaderMaterial(
     uSpeed: 0.3,
   },
   vertexShader,
-  fragmentShader
+  fragmentShader,
 );
 
 export default GradientMeshMaterial;

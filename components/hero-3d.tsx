@@ -1,15 +1,15 @@
 "use client";
 
+import { Canvas, extend, useFrame, useThree } from "@react-three/fiber";
+import { useTheme } from "next-themes";
 import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
   useRef,
   useState,
-  useEffect,
-  Suspense,
-  useMemo,
-  useCallback,
 } from "react";
-import { Canvas, useFrame, useThree, extend } from "@react-three/fiber";
-import { useTheme } from "next-themes";
 import * as THREE from "three";
 import GradientMeshMaterial from "../materials/GradientMeshMaterial";
 
@@ -47,7 +47,7 @@ const getPerformanceConfig = () => {
 
   const isMobile =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
+      navigator.userAgent,
     );
   const isLowEnd = navigator.hardwareConcurrency
     ? navigator.hardwareConcurrency <= 4
@@ -70,10 +70,10 @@ function GradientMesh() {
   const { size, viewport } = useThree();
   const { theme, resolvedTheme } = useTheme();
   const [targetMousePosition, setTargetMousePosition] = useState(
-    new THREE.Vector2(0.5, 0.5)
+    new THREE.Vector2(0.5, 0.5),
   );
   const [smoothMousePosition, setSmoothMousePosition] = useState(
-    new THREE.Vector2(0.5, 0.5)
+    new THREE.Vector2(0.5, 0.5),
   );
 
   const performanceConfig = useMemo(() => getPerformanceConfig(), []);
@@ -96,8 +96,8 @@ function GradientMesh() {
     setTargetMousePosition(
       new THREE.Vector2(
         event.clientX / window.innerWidth,
-        1.0 - event.clientY / window.innerHeight
-      )
+        1.0 - event.clientY / window.innerHeight,
+      ),
     );
   }, []);
 
@@ -197,7 +197,7 @@ export default function Hero3D() {
     const basePixelRatio = window.devicePixelRatio || 1;
     const optimizedRatio = Math.min(
       basePixelRatio,
-      performanceConfig.maxPixelRatio || 1.0
+      performanceConfig.maxPixelRatio || 1.0,
     );
 
     setPixelRatio(optimizedRatio);
@@ -210,7 +210,7 @@ export default function Hero3D() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const element = document.querySelector("[data-hero-3d]");

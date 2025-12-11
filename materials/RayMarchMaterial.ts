@@ -1,5 +1,5 @@
-import * as THREE from "three";
 import { shaderMaterial } from "@react-three/drei";
+import * as THREE from "three";
 
 const vertexShader = `
 varying vec2 vUv;
@@ -359,7 +359,7 @@ const RayMarchMaterial = shaderMaterial(
     uQuality: 1.0, // 1.0 = high quality, 0.5 = medium, 0.0 = low
   },
   vertexShader,
-  fragmentShader
+  fragmentShader,
 );
 
 export default RayMarchMaterial;
