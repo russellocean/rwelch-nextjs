@@ -8,6 +8,26 @@ import { FadeInUp } from "@/components/motion-wrappers";
 const projects = [
   {
     id: 1,
+    title: "Blu Gorilla Tattoo",
+    description:
+      "Designed and developed a modern website for Charleston's first tattoo shop, featuring artist portfolios, location information, and a dark aesthetic that matches the brand. The site showcases 11 artists across 2 locations with an image-rich gallery system and mobile-first responsive design.",
+    image: "/projects/blu-gorilla-tattoo.webp",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui"],
+    category: "Corporate Website",
+    year: "2025",
+    status: "Live",
+    links: {
+      live: "https://blu-gorilla-nextjs.vercel.app/",
+      github: "#",
+    },
+    stats: {
+      artists: "11",
+      locations: "2",
+      established: "Est. 2007",
+    },
+  },
+  {
+    id: 2,
     title: "Personal Portfolio",
     description:
       "This very portfolio you're viewing! Built with Next.js 15, React 19, and modern web technologies. Features 3D elements, smooth animations, and a glass morphism design language.",
@@ -27,7 +47,7 @@ const projects = [
     },
   },
   {
-    id: 2,
+    id: 3,
     title: "Goldfinger Monitors Website",
     description:
       "Led the complete redesign and development of the Goldfinger Monitors website, creating a modern, responsive platform that better showcases their touchscreen monitor products and attracts potential customers across multiple industries.",
@@ -47,7 +67,7 @@ const projects = [
     },
   },
   {
-    id: 3,
+    id: 4,
     title: "RMA Portal System",
     description:
       "Built a comprehensive RMA system that allows customers to initiate returns, track repair status, and communicate with support. Features real-time data analytics for actionable product insights, coordinating 9 technicians across 3 locations with QR code scanning capabilities.",
@@ -67,7 +87,7 @@ const projects = [
     },
   },
   {
-    id: 4,
+    id: 5,
     title: "Dare2Watch E-commerce",
     description:
       "Built a comprehensive e-commerce solution for a luxury watch retailer featuring real-time inventory tracking, customer account management, and integrated Square payment processing. The platform includes an admin dashboard for inventory management and customer service tools.",
@@ -87,7 +107,7 @@ const projects = [
     },
   },
   {
-    id: 5,
+    id: 6,
     title: "Interactive Trade Show Games",
     description:
       "Created three engaging interactive experiences for trade shows using Unity and C#: a roulette wheel game, a catch-them-all collection game with cart mechanics, and a fake slot machine demo. These games demonstrate the capabilities of Goldfinger's touchscreen monitors while entertaining visitors.",
@@ -107,7 +127,7 @@ const projects = [
     },
   },
   {
-    id: 6,
+    id: 7,
     title: "Goldfinger MANAGE",
     description:
       "Developed a comprehensive parts management system for Goldfinger Monitors, featuring over 1700+ unique part numbers with vendor price tracking. The system coordinates between engineering facilities in the US and manufacturing in Vietnam across multiple departments.",
